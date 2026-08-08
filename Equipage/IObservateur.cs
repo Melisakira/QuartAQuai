@@ -1,8 +1,8 @@
-﻿using System;
+﻿using QuartEnMer;
 
-public class Class1
+namespace QuartEnMer.Equipage;
+
+public interface IObservateur
 {
-	public Class1()
-	{
-	}
+    void MettreAJour(Incident incident);
 }
