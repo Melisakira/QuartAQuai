@@ -1,4 +1,4 @@
-﻿using QuartEnMer;
+﻿using QuartEnMer.Alertes;
 
 namespace QuartEnMer.Equipage;
 
