@@ -3,9 +3,11 @@ using QuartEnMer.Alertes;
 
 namespace QuartEnMer.Equipage;
 
-public class Electricien : MembrEquipage, IObservateur
+public class Electricien : MembreEquipage, IObservateur
 {
 	public Electricien(string nom, string grade, string posteAffecte)
-		: base(nom, grade, posteAffecte);
+		: base(nom, grade, posteAffecte)
+	{
+	}		
 
 }

@@ -1,8 +1,17 @@
-﻿using System;
+﻿using QuartEnMer;
 
-public class Class1
+namespace QuartEnMer.Equipage;
+
+public abstract class MembreEquipage 
 {
-	public Class1()
+	private string _nom;
+	private string _grade;
+	private string _posteAffecte;
+
+
+
+
+	public MembreEquipage()
 	{
 	}
 }
