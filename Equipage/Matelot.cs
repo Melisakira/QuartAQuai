@@ -1,8 +1,13 @@
 ﻿using System;
+using QuartEnMer.Alertes;
 
-public class Class1
+namespace QuartEnMer.Equipage;
+
+public class Matelot : MembreEquipage, IObservateur
 {
-	public Class1()
-	{
-	}
+    public Matelot(string nom, string grade, string posteAffecte)
+        : base(nom, grade, posteAffecte)
+    {
+    }
+
 }

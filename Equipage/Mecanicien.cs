@@ -1,8 +1,13 @@
 ﻿using System;
+using QuartEnMer.Alertes;
 
-public class Class1
+namespace QuartEnMer.Equipage;
+
+public class Mecanicien : MembreEquipage, IObservateur
 {
-	public Class1()
-	{
-	}
+    public Mecanicien(string nom, string grade, string posteAffecte)
+        : base(nom, grade, posteAffecte)
+    {
+    }
+
 }
