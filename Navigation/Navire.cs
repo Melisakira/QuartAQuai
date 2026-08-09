@@ -1,8 +1,11 @@
 ﻿using System;
 
-public class Class1
+namespace Navigation
 {
-	public Class1()
+	public class Navire
 	{
+		public Navire()
+		{
+		}
 	}
 }

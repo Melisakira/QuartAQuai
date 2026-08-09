@@ -14,6 +14,6 @@ public abstract class MembreEquipage
 		Grade = grade;
 		PosteAffecte = posteAffecte;
 	}
-	Public abstract void ReagirAlerte(Incident incident);
-	
+	public abstract void ReagirAlerte(Incident incident);
+
 }

@@ -1,8 +1,12 @@
 ﻿using System;
 
-public class Class1
+namespace Navigation
 {
-	public Class1()
+	public class JournalDeBord
 	{
+		public JournalDeBord()
+		{
+		}
 	}
 }
+

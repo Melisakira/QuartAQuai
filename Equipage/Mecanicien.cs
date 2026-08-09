@@ -10,4 +10,15 @@ public class Mecanicien : MembreEquipage, IObservateur
     {
     }
 
+    public override void ReagirAlerte(Incident incident)
+    {
+        // Par défaut 
+    }
+
+    // !! redondance implémentation interface IObservateur ??? à revoir le chapitre 11 ?
+    public void MettreAJour(Incident incident)
+    {
+        // !! redondance avec electricien et 
+        ReagirAlerte(incident);
+    }
 }

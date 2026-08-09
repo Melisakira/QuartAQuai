@@ -1,8 +1,11 @@
 ﻿using System;
 
-public class Class1
+namespace Alertes
 {
-	public Class1()
+	public class AvarieMecanique
 	{
+		public AvarieMecanique()
+		{
+		}
 	}
 }

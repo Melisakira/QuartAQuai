@@ -10,4 +10,9 @@ public class Officier : MembreEquipage, IObservateur
     {
     }
 
+    public void MettreAJour(Incident incident)
+    {
+       // idem
+    }
+
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-public class Class1
+public interface ISujet
 {
-	public Class1()
-	{
-	}
+    void AjouterObservateur(IObservateur observateur);
+    void RetirerObservateur(IObservateur observateur);
+    void NotifierObservateurs(Incident incident);
 }
