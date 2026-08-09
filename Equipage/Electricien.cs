@@ -1,7 +1,8 @@
 ﻿using System;
-using QuartEnMer.Alertes;
+using QuartAQuai.Alertes;
+using QuartEnMer.Equipage;
 
-namespace QuartEnMer.Equipage;
+namespace QuartAQuai.Equipage;
 
 public class Electricien : MembreEquipage, IObservateur
 {
@@ -10,4 +11,20 @@ public class Electricien : MembreEquipage, IObservateur
 	{
 	}		
 
+	public override void ReagirAlerte(Incident incident)
+	{
+		if (incident is PanneElectrique)
+		{
+			Console.WriteLine($"{Nom} ({Grade}) : Je me reds à {PosteAffecte} pour traiter {incident.Decrire()}");
+		}
+		else
+		{
+            Console.WriteLine($"{Nom} ({Grade}) :Incident hors de mon domaine, je reste disponible{incident.Decrire()}");
+        }
+	}
+	public void MettreAJour(Incident incident)
+	{
+		ReagirAlerte(incident);
+	}
 }
+

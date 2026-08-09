@@ -1,17 +1,19 @@
-﻿using QuartEnMer.Alertes;
+﻿using QuartAQuai.Alertes;
 
-namespace QuartEnMer.Equipage;
+namespace QuartAQuai.Equipage;
 
 public abstract class MembreEquipage 
 {
-	private string _nom;
-	private string _grade;
-	private string _posteAffecte;
-
-
-
-
-	public MembreEquipage()
+	public string Nom { get; }
+	public string Grade { get; }
+	public string PosteAffecte { get; }
+	
+	public MembreEquipage(string nom, string grade, string posteAffecte)
 	{
+		Nom = nom;
+		Grade = grade;
+		PosteAffecte = posteAffecte;
 	}
+	Public abstract void ReagirAlerte(Incident incident);
+	
 }

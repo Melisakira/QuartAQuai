@@ -1,6 +1,6 @@
-﻿using QuartEnMer.Alertes;
+﻿using QuartAQuai.Alertes;
 
-namespace QuartEnMer.Equipage;
+namespace QuartAQuai.Equipage;
 
 public interface IObservateur
 {

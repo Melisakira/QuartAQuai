@@ -1,8 +1,15 @@
-﻿using System;
+﻿namespace QuartAQuai.Alertes;
 
-public class Class1
+public abstract class Incident
 {
-	public Class1()
+	public string Gravite { get; }
+	public string Description { get; }
+
+	public Incident(string gravite, string description)
 	{
+		Gravite = gravite;
+		Description = description;
 	}
+
+	public abstract string Decrire();
 }
