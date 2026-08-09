@@ -1,4 +1,4 @@
-﻿namespace QuartEnMer
+﻿namespace QuartAQuai
 {
     internal class Program
     {

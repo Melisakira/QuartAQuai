@@ -1,6 +1,6 @@
 ﻿using System;
 using QuartAQuai.Alertes;
-using QuartEnMer.Equipage;
+using QuartAQuai.Equipage;
 
 namespace QuartAQuai.Equipage;
 
