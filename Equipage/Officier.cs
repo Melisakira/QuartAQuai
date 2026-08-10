@@ -1,9 +1,8 @@
-﻿using System;
-using QuartAQuai.Alertes;
+﻿using QuartAQuai.Alertes;
 
 namespace QuartAQuai.Equipage;
 
-public class Officier : MembreEquipage, IObservateur
+public class Officier : MembreEquipage
 {
     public Officier(string nom, string grade, string posteAffecte)
         : base(nom, grade, posteAffecte)
@@ -12,7 +11,8 @@ public class Officier : MembreEquipage, IObservateur
 
     public void MettreAJour(Incident incident)
     {
-       // idem
+        // idem
+        ReagirAlerte(incident);
     }
 
 }
