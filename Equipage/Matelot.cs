@@ -9,9 +9,16 @@ public class Matelot : MembreEquipage
     {
     }
 
-    public void MettreAJour(Incident incident)
+    public override void ReagirAlerte(Incident incident)
     {
-        ReagirAlerte(incident);
+        if (incident is AlerteMeteo)
+        {
+            Console.WriteLine($"{Nom} ({Grade}) : Je vérifie le pont et les amarres : {incident.Decrire()}");
+        }
+        else
+        {
+            Console.WriteLine($"{Nom} ({Grade}) : incident hors de mon domaine, je reste à disposition : {incident.Decrire()}");
+        }
     }
 }
 
