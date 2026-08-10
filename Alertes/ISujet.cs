@@ -1,8 +1,10 @@
-﻿using System;
+﻿using QuartAQuai.Equipage;
+
+namespace QuartAQuai.Alertes;
 
 public interface ISujet
 {
-    void AjouterObservateur(IObservateur observateur);
-    void RetirerObservateur(IObservateur observateur);
-    void NotifierObservateurs(Incident incident);
+    void Abonner(IObservateur observateur);
+    void Desabonner(IObservateur observateur);
+    void Notifier (Incident incident);
 }
