@@ -1,4 +1,4 @@
-﻿namespace QuartAQuai;
+﻿namespace QuartAQuai.Alertes;
 
 public class PanneElectrique : Incident
 {

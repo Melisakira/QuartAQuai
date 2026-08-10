@@ -9,10 +9,10 @@ public class Officier : MembreEquipage
     {
     }
 
-    public void MettreAJour(Incident incident)
+    public override void ReagirAlerte(Incident incident)
     {
-        // idem
-        ReagirAlerte(incident);
+        // Minimal
+        Console.WriteLine($"Officier {Nom} ({Grade}) répond à une alerte : {incident}");
     }
 
 }
