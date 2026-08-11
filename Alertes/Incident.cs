@@ -5,11 +5,12 @@ public abstract class Incident
 	public string Gravite { get; }
 	public string Description { get; }
 
-	public Incident(string gravite, string description)
+	protected Incident(string gravite, string description)
 	{
 		Gravite = gravite;
 		Description = description;
 	}
+
 
 	public abstract string Decrire();
 }
