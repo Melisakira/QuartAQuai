@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
-public class CentreAlerte
+namespace QuartAQuai.Alertes;
+
+public class CentreAlerte : ISujet
 {
-	public CentreAlerte()
-	{
-	}
+	
+
 }
 

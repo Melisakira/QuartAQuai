@@ -1,8 +1,8 @@
-﻿using System;
+﻿namespace QuartAQuai.Alertes;
 
-public class Class1
+public class AlerteMeteo : Incident
 {
-	public Class1()
+	public AlerteMeteo()
 	{
 	}
 }

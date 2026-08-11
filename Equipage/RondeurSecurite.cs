@@ -1,8 +1,11 @@
 ﻿using System;
+using QuartAQuai.Alertes;
 
-public class Class1
+namespace QuartAQuai.Equipage;
+
+public class RondeurSecurite : MembreEquipage
 {
-	public Class1()
+	public RondeurSecurite()
 	{
 	}
 }

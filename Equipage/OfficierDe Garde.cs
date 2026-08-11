@@ -1,7 +1,7 @@
 ﻿using System;
-using QuartDeMer.Alertes;
+using QuartAQuai.Alertes;
 
-namespace QuartDeMer.Equipage;
+namespace QuartAQuai.Equipage;
 
 public class OfficierDeGarde : MembreEquipage
 {
@@ -27,4 +27,6 @@ public class OfficierDeGarde : MembreEquipage
 }
 
 
-    
+
+
+

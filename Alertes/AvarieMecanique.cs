@@ -1,11 +1,9 @@
-﻿using System;
+﻿namespace QuartAQuai.Alertes;
 
-namespace Alertes
+public class AvarieMecanique : Incident
 {
-	public class AvarieMecanique
-	{
 		public AvarieMecanique()
 		{
 		}
-	}
+	
 }

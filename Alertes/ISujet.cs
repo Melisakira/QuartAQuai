@@ -1,6 +1,4 @@
-﻿using QuartAQuai.Equipage;
-
-namespace QuartAQuai.Alertes;
+﻿namespace QuartAQuai.Alertes;
 
 public interface ISujet
 {
