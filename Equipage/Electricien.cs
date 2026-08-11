@@ -20,7 +20,7 @@ public class Electricien : MembreEquipage
         }
 		else
 		{
-            Console.WriteLine($"{Nom} ({Grade}) :Incident hors de mon domaine, je reste disponible{incident.Decrire()}");
+            Console.WriteLine($"{Nom} ({Grade}) :Incident hors de mon domaine, je reste à mon poste : {incident.Decrire()}");
         }
 	}
 }	
