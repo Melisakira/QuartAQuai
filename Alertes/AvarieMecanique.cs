@@ -2,16 +2,16 @@
 
 public class AvarieMecanique : Incident
 {
-    public string EquipementConcerne { get; }
+    public string SystemeConcerne { get; }
 
-    public AvarieMecanique(string gravite, string description, string equipementConcerne)
+    public AvarieMecanique(string gravite, string description, string systemeConcerne)
         : base(gravite, description)
     {
-        EquipementConcerne = equipementConcerne;
+        SystemeConcerne = systemeConcerne;
     }
 
     public override string Decrire()
     {
-        return $"[Avarie mécanique] {Description} : équipement concerné : {EquipementConcerne} (gravité : {Gravite})";
+        return $"{Description} - {SystemeConcerne} [{Gravite}]";
     }
 }

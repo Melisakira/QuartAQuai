@@ -1,5 +1,4 @@
-﻿using System;
-using QuartAQuai.Alertes;
+﻿using QuartAQuai.Alertes;
 
 namespace QuartAQuai.Equipage;
 
@@ -14,11 +13,11 @@ public class Mecanicien : MembreEquipage
     {
         if (incident is AvarieMecanique)
         {
-            Console.WriteLine($"{Nom} ({Grade}) : Je me rends à {PosteAffecte} pour traiter : {incident.Decrire()}");
-            Console.WriteLine($"{Nom} ({Grade}) : J'isole le circuit concerné et répare la panne  :{incident.Decrire()}");
-            Console.WriteLine($"{Nom} ({Grade}) : Je rends compte à l'officier de garde de la manoeuvre effectuée :{incident.Decrire()}");
+            Console.WriteLine($"{Nom} ({Grade}) : Je me rends en {PosteAffecte} pour traiter l'incident: {incident.Decrire()}");
+            Console.WriteLine($"{Nom} ({Grade}) : J'isole le circuit défaillant et je procède à la réparation;");
+            Console.WriteLine($"{Nom} ({Grade}) : Officier de quart, ici la machine. Panne résolue concernant:{incident.Decrire()}");
         }
-    
+
         else
         {
             Console.WriteLine($"{Nom} ({Grade}) : incident hors de mon domaine, je reste à mon poste : {incident.Decrire()}");

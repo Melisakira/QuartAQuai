@@ -1,6 +1,6 @@
 ﻿using QuartAQuai.Alertes;
 using QuartAQuai.Equipage;
 
-Electricien electricien = new("Isabelle", "second maitre", "Local technique");
-PanneElectrique panneElectrique = new("critique", "Court-circuit sur le tableau principal", "Tableau éléctrique");
-electricien.ReagirAlerte(panneElectrique);
+Mecanicien mecanicien = new("Jean", "quartier maître", "Salle des machines");
+AvarieMecanique avarieMecanique = new("critique", "panne de régulation", "Génératrice 1");
+mecanicien.ReagirAlerte(avarieMecanique);
