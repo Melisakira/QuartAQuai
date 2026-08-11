@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Navigation
+﻿namespace QuartAQuai.Navigation
 {
-	public class Navire
-	{
-		public Navire()
-		{
-		}
-	}
+    public class Navire
+    {
+        public Navire()
+        {
+        }
+    }
 }

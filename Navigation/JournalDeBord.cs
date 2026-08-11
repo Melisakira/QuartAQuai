@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Navigation
+﻿namespace QuartAQuai.Navigation
 {
-	public class JournalDeBord
-	{
-		public JournalDeBord()
-		{
-		}
-	}
+    public class JournalDeBord
+    {
+        public JournalDeBord()
+        {
+        }
+    }
 }
 
