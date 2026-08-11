@@ -12,7 +12,7 @@ public class PanneElectrique : Incident
 
 	public override string Decrire ()
 	{
-		 return $"[Panne électrique] {Description} — équipement concerné : {EquipementConcerne} (gravité : {Gravite})";
+		 return $"[Panne électrique] {Description} : équipement concerné : {EquipementConcerne} (gravité : {Gravite})";
 	}
 }
 	
