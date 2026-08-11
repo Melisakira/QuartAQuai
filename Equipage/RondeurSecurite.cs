@@ -11,5 +11,6 @@ public class RondeurSecurite : MembreEquipage
     }
     public override void ReagirAlerte(Incident incident)
     {
+        throw new NotImplementedException();
     }
 }

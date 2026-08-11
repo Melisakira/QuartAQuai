@@ -10,6 +10,7 @@ public class VeilleurCoupee : MembreEquipage
     {
     }
     public override void ReagirAlerte(Incident incident)
-    { 
+    {
+        throw new NotImplementedException();
     }
 }
