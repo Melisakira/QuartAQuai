@@ -1,34 +1,42 @@
-# QuartAQuai
+## QuartAQuai
 
-Simulation en console c# d'un quart de nuit à quai à bord de la frégate F911 Wesdiep (Force Navale Belge). Projet réalisé dans le cadre de l'examen de seonde session de Programmation Orientée Objet.
+Simulation en console interactive (c#) d'un quart de nuit à quai à bord de la frégate F911 Wesdiep (Force Navale Belge). Projet réalisé dans le cadre de l'examen de seconde session de Programmation Orientée Objet.
 
 ## Présentation
 
-Le programme met en scène un équipage de garde qui assure le quart de nuit : 
-
+Le programme met en scène un équipage de garde qui assure le quart de nuit : chaque rôle a sa propre responsabilité et doit réagir à des incidents qui peuvent survenir. Le scénario se déroule à quai, dans le port de Zeebrugge, et met en avant les aspects de sécurité, sûreté et intervention d'urgence.
 
 Le scénario s'appuie sur une expérience vécue d'électricienne de bord.
 
+## Scénario
 
+Cinq membres de l'équipage sont de quart, chacun à un poste précis et fixe, sauf un :
 
+| Rôle | Poste | Se déplace ? |
+|---|---|---|
+| Officier de garde (ODG) | Poste de garde | Non - centralise les alertes et coordonne les interventions |
+| Elecricien (technicien) | Local électrique | Non - surveille les systèmes électriques au local éléctrique |
+| Mécanicien (technicien) | Salle des machines | Non - surveille les systèmes mécaniques au local machine |
+| Veilleur de coupée | Coupée | Non - surveille l'extérieur du navire et les amarres |
+| Rondeur de sécurité | Oui - Seul rôle mobile, se déplace sur le pont et dans les locaux pour vérifier la sûreté |
 
 
 ## Fonctionnalités (4, indépendantes)
 
-| # | Fonctionnalité | Classe porteuse |
-|---|---|---|
-| 1 |  Sécurité incendie et technique: l'électricien et le mécanicien sureveillent les systèmes électriques et mécaniques du navire. Une anomalie peut déclencher une panne électrique ou une avarie mécanique. |
-|2| Sécurité nautique : le veilleur observe la tension des amarres face au vent et à la marée. Une tension excessive déclenche une alerte météo. |
-| 3 | Sûreté et contrôle d'accès : le veilleur filtre les identités à la coupée et contrôle l'accès au navire. Une identité suspecte déclenche une alerte de sûreté. |
-| 4 | Permanence du commandement et intervention d'urgence: l'officier de quart assure la permanence du commandement et la communication. Il centralise les alertes et coordonne les interventions. |
+| # | Fonctionnalité | Qui l'exécute| Classe / méthode |
+|---|---|---|---|
+| 1 |  Consulter le journal d ebord (briefeing de relève) | tout membre (générique) | `JournalDeBord.ConsulterEntrees()` |
+| 2 |  Faire la ronde de sécurité (coursives, soutes, cafétaria, locaux techniques) | Rondeur de sécurité | `Navire.FaireRonde(RondeurSécurite, string, string)`|
+| 3 |  Déclarer un incident (panne électrique, avarie mécanique, alerte météo), avec escalade automatique si critique | déclenché par l'utilisateur ; tout l'équipage réagit ensuite automatiquement (Observer) | `CentreAlerte.DeclarerIncident(Incident)` |
+| 4 | Assurer la veille (accès, état des amarres) | Veilleur de coupée | `VeilleurCoupée.SurveillerQuai(string, string)` |
 
-Chaque fonctionnalité peut déclarer un type d'incident qui lui est propre (`PanneElectrique`, `AvarieMecanique`, `AlerteMeteo`, `BrècheDeSûreté`). Le CentreAlerte notifie tous les membres d'équipage abonnés, qui réagissent chacun selon leur rôle.
+
 
 ## Architecture - deux hiérarchies d'héritage
 
 ### `MembreEquipage` (hiérarchie principale, polymorphisme)
 
-Classe abstraite `MembreEquipage` (nom, grade, poste affecté) avec une méthode abstraite
+Classe abstraite `MembreEquipage` (nom, grade, poste affecté), avec une méthode abstraite
 `ReagirAlerte()`. Quatre rôles la spécialisent réellement, chacun avec sa propre réaction :
 `Officier`, `Electricien`, `Mecanicien`, `Matelot`.
 
