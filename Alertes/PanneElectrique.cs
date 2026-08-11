@@ -2,17 +2,17 @@
 
 public class PanneElectrique : Incident
 {
-	public string EquipementConcerne { get; }
+    public string SystemeConcerne { get; }
 
-	public PanneElectrique(string gravite, string description, string equipementConcerne)
-		: base(gravite, description)
-	{
-		EquipementConcerne = equipementConcerne;
-	}
+    public PanneElectrique(string gravite, string description, string systemeConcerne)
+        : base(gravite, description)
+    {
+        SystemeConcerne = systemeConcerne;
+    }
 
-	public override string Decrire ()
-	{
-		 return $"[Panne électrique] {Description} : équipement concerné : {EquipementConcerne} (gravité : {Gravite})";
-	}
+    public override string Decrire()
+    {
+        return $"[Panne électrique] {Description} : système concerné : {SystemeConcerne} (gravité : {Gravite})";
+    }
 }
-	
+
