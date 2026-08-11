@@ -2,7 +2,7 @@
 
 namespace QuartAQuai.Equipage;
 
-public abstract class MembreEquipage 
+public abstract class MembreEquipage : IObservateur
 {
 	public string Nom { get; }
 	public string Grade { get; }
@@ -15,5 +15,10 @@ public abstract class MembreEquipage
 		PosteAffecte = posteAffecte;
 	}
 	public abstract void ReagirAlerte(Incident incident);
+
+	public void MettreAJour(Incident incident)
+	{
+		ReagirAlerte(incident);
+	}
 
 }
