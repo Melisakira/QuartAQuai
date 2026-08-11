@@ -21,10 +21,10 @@ public class OfficierDeGarde : MembreEquipage
         }
     }
     public void EscaladerVersCommandant(Incident incident)
-        {
+    {    
             Console.WriteLine($"{Nom} ({Grade}) : Je réveille le commandant et l'en informe : {incident.Decrire()}");
-        }
     }
+}
 
 
     
