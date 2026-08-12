@@ -2,16 +2,16 @@ namespace QuartAQuai.Alertes;
 
 public class AlerteMeteo : Incident
 {
-    public string SystemeConcerne { get; }
+    public string Phenomene { get; }
 
-    public AlerteMeteo(string gravite, string description, string systemeConcerne)
+    public AlerteMeteo(string gravite, string description, string phenomene)
         : base(gravite, description)
     {
-        SystemeConcerne = systemeConcerne;
+        Phenomene = phenomene;
     }
 
     public override string Decrire()
     {
-        return $"[Alerte Météo] {Description} : système concerné : {SystemeConcerne} (gravité : {Gravite})";
+        return $"[Alerte Météo] {Description} : phénomène : {Phenomene} (gravité : {Gravite})";
     }
 }
