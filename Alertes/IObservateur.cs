@@ -3,6 +3,6 @@
 public interface IObservateur
 {
     void MettreAJour(Incident incident);
-      
-
 }
+
+
