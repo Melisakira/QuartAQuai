@@ -2,9 +2,23 @@
 
 public class CentreAlerte : ISujet
 {
-    public void Abonner(IObservateur observateur) { throw new NotImplementedException(); }
-    public void Desabonner(IObservateur observateur) { throw new NotImplementedException(); }
-    public void Notifier(Incident incident) { throw new NotImplementedException(); }
-
+    private List<IObservateur> _observateurs = new List<IObservateur>();
+    public void Abonner(IObservateur observateur)
+    {
+        _observateurs.Add(observateur);
+    }
+    public void Desabonner(IObservateur observateur)
+    {
+        _observateurs.Remove(observateur);
+    }
+    public void Notifier(Incident incident)
+    {
+        foreach (IObservateur observateur in _observateurs)
+        {
+            observateur.MettreAJour(incident);
+        }
+    }
 }
+
+
 
