@@ -10,6 +10,23 @@ public class VeilleurCoupee : MembreEquipage
     }
     public override void ReagirAlerte(Incident incident)
     {
-        throw new NotImplementedException();
+        if (incident is IncidentSurete)
+        {
+            Console.WriteLine($"{Nom} ({Grade}) - Alerte sûreté ! Bouclage des accès et application des mesures de protection — {incident.Decrire()}");
+        }
+        else if (incident is AlerteMeteo)
+        {
+            Console.WriteLine($"{Nom} ({Grade}) - Alerte météo ! Je m'assure que tout l'équipage est en sécurité et que les procédures d'urgence sont suivies — {incident.Decrire()}");
+        }
+        else
+        {
+            Console.WriteLine($"{Nom} ({Grade}) - {PosteAffecte} - Incident hors de mon domaine, je maintiens le contrôle - {incident.Decrire()}");
+        }
     }
 }
+
+
+
+
+
+
