@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace QuartAQuai.Alertes;
+﻿namespace QuartAQuai.Alertes;
 
 public class CentreAlerte : ISujet
 {
