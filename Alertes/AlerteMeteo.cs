@@ -12,6 +12,6 @@ public class AlerteMeteo : Incident
 
     public override string Decrire()
     {
-        return $"[Alerte Météo] {Description} : phénomène : {Phenomene} (gravité : {Gravite})";
+        return $"{Description} -{Phenomene} {Gravite})";
     }
 }
