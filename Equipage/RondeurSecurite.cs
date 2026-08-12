@@ -10,6 +10,7 @@ public class RondeurSecurite : MembreEquipage
     }
     public override void ReagirAlerte(Incident incident)
     {
-        throw new NotImplementedException();
+        Console.WriteLine($"{Nom} ({Grade}) - Je poursuis ma ronde, attentif à toute anomalie - {incident.Description}");
     }
 }
+
