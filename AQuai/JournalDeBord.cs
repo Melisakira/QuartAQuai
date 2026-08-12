@@ -1,4 +1,4 @@
-﻿namespace QuartAQuai.Navigation;
+﻿namespace QuartAQuai.AQuai;
 
 public class JournalDeBord
 {

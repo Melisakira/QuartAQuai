@@ -1,8 +1,8 @@
-﻿namespace QuartAQuai.Navigation;
+﻿namespace QuartAQuai.AQuai;
 
 public class EntreeJournal
 {
-	public EntreeJournal()
-	{
-	}
+    public EntreeJournal()
+    {
+    }
 }
