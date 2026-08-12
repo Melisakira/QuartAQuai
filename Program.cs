@@ -1,4 +1,4 @@
-﻿using QuartAQuai.Alertes;
+﻿using QuartAQuai.AQuai;
 using QuartAQuai.Equipage;
 
 namespace QuartAQuai;
@@ -7,21 +7,24 @@ static class Program
 {
     static void Main(string[] args)
     {
-        OfficierDeGarde officier = new("Pierre", "Lieutenant", "PC Sécurité");
-        AvarieMecanique avarieCritique = new("critique", "panne de régulation", "Génératrice 1");
-        PanneElectrique panneElectrique = new("majeur", "coupure de courant", "Système d'éclairage");
-        Console.WriteLine("--- DÉBUT DU TEST DE L'OFFICIER DE GARDE ---");
+        Navire Navire = new("Wesdiep", "Frégate");
+        RondeurSecurite rondeurSecurite = new("Jean-Pierre", "Quartier-Maître", "Ronde");
 
-        officier.ReagirAlerte(avarieCritique);
-        officier.ReagirAlerte(panneElectrique);
+        Console.WriteLine($"--- DÉBUT DE LA RONDE SÉCURITÉ ---");
 
+        // Boucle 
+        foreach (string compartiment in Navire.Compartiments)
+        {
+            Console.WriteLine($"\nInspection : {compartiment}");
+            Console.Write("Taper l'observation du rondeur > ");
 
-        Console.WriteLine("--- FIN DU TEST ---");
+            string observationSaisie = Console.ReadLine();
+
+            Navire.FaireRonde(rondeurSecurite, compartiment, observationSaisie);
+        }
+
+        Console.WriteLine("\n--- FIN DE LA RONDE — TOUS LES COMPARTIMENTS ONT ÉTÉ INSPECTÉS ---");
     }
 }
 
-// S1118 signifie qu'une classe qui ne contient que des membres statiques devrait être marquée static ou bien fournir un constructeur protected pour empêcher l'instanciation.
-// or class Program
-// protected Program() { }
 
-// à réfélchir : est-ce que je veux que cette classe soit instanciable ou pas ? 
