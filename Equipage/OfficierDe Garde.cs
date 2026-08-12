@@ -1,5 +1,4 @@
-﻿using System;
-using QuartAQuai.Alertes;
+﻿using QuartAQuai.Alertes;
 
 namespace QuartAQuai.Equipage;
 
@@ -15,7 +14,7 @@ public class OfficierDeGarde : MembreEquipage
         {
             Console.WriteLine($"{Nom} ({Grade}) :Officier de garde au PC Sécurité. Alerte reçue : {incident.Decrire()}. A traiter lors de la prochaine ronde.");
         }
-        else if (incident.Gravite == "majeur" || incident.Gravite == "critique")
+        else if (incident.Gravite is "majeur" or "critique")
         {
             Console.WriteLine($"{Nom} ({Grade}) : Officier de garde au PC Sécurité. Alerte reçue : {incident.Decrire()}. Equipe de garde, procédez immédiatement à la levée des doutes.");
             Console.WriteLine($"{Nom} ({Grade}) : Je bascule les réseaux de secours et je passe le poste de garde en posture de vigilance.");
