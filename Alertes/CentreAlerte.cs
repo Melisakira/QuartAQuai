@@ -2,7 +2,7 @@
 
 public class CentreAlerte : ISujet
 {
-    private List<IObservateur> _observateurs = new List<IObservateur>();
+    private readonly List<IObservateur> _observateurs = new List<IObservateur>();
     public void Abonner(IObservateur observateur)
     {
         _observateurs.Add(observateur);

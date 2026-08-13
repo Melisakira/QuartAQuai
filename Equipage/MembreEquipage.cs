@@ -10,8 +10,7 @@ public abstract class MembreEquipage : IObservateur
 
     protected MembreEquipage(string nom, string grade, string posteAffecte)
     {
-        Nom = nom;
-        Grade = grade;
+        Nom = nom; Grade = grade;
         PosteAffecte = posteAffecte;
     }
     public abstract void ReagirAlerte(Incident incident);
@@ -20,5 +19,7 @@ public abstract class MembreEquipage : IObservateur
     {
         ReagirAlerte(incident);
     }
-
 }
+
+    
+   
