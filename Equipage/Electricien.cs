@@ -1,4 +1,5 @@
-﻿using QuartAQuai.Alertes;
+﻿using System;
+using QuartAQuai.Alertes;
 
 namespace QuartAQuai.Equipage;
 
