@@ -8,6 +8,11 @@ public class VeilleurCoupee : MembreEquipage
         : base(nom, grade, posteAffecte)
     {
     }
+
+    public void SurveillerQuai(string etatAmarres, string observation)
+    {
+        Console.WriteLine($"{Nom} ({Grade}) - Surveillance du quai et des accès : amarres {etatAmarres}, {observation}, prêt à réagir en cas d'incident.");
+    }
     public override void ReagirAlerte(Incident incident)
     {
         if (incident is IncidentSurete)
