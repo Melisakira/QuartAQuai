@@ -23,6 +23,8 @@ class Program
         centreAlerte.Abonner(rondeur);
         centreAlerte.Abonner(veilleur);
 
+        centreAlerte.Notifier(new AlerteMeteo("mineur", "test", ""));
+
         JournalDeBord journal = new JournalDeBord();
 
         bool continuerLeQuart = true;
