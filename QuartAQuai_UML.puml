@@ -1,0 +1,107 @@
+@startuml QuartAQuai
+
+' ===== Hiérarchie Incident =====
+abstract class Incident {
+    +Gravite : string
+    +Description : string
+    +{abstract} Decrire() : string
+}
+class AlerteMeteo {
+    +Phenomene : string
+    +Decrire() : string
+}
+class AvarieMecanique {
+    +SystemeConcerne : string
+    +Decrire() : string
+}
+class IncidentSurete {
+    +NatureMenace : string
+    +Decrire() : string
+}
+class PanneElectrique {
+    +SystemeConcerne : string
+    +Decrire() : string
+}
+
+Incident <|-- AlerteMeteo
+Incident <|-- AvarieMecanique
+Incident <|-- IncidentSurete
+Incident <|-- PanneElectrique
+
+' ===== Pattern Observer =====
+interface IObservateur {
+    +MettreAJour(incident : Incident) : void
+}
+interface ISujet {
+    +Abonner(observateur : IObservateur) : void
+    +Desabonner(observateur : IObservateur) : void
+    +Notifier(incident : Incident) : void
+}
+class CentreAlerte {
+    -_observateurs : List<IObservateur>
+    +Abonner(observateur : IObservateur) : void
+    +Desabonner(observateur : IObservateur) : void
+    +Notifier(incident : Incident) : void
+}
+
+ISujet <|.. CentreAlerte
+CentreAlerte o-- "0..*" IObservateur : notifie
+CentreAlerte ..> Incident : utilise
+
+' ===== Hiérarchie MembreEquipage =====
+abstract class MembreEquipage {
+    +Nom : string
+    +Grade : string
+    +PosteAffecte : string
+    +{abstract} ReagirAlerte(incident : Incident) : void
+    +MettreAJour(incident : Incident) : void
+}
+class Electricien {
+    +ReagirAlerte(incident : Incident) : void
+}
+class Mecanicien {
+    +ReagirAlerte(incident : Incident) : void
+}
+class OfficierDeGarde {
+    +ReagirAlerte(incident : Incident) : void
+    +EscaladerVersCommandant(incident : Incident) : void
+}
+class RondeurSecurite {
+    +ReagirAlerte(incident : Incident) : void
+}
+class VeilleurCoupee {
+    +ReagirAlerte(incident : Incident) : void
+}
+
+MembreEquipage <|-- Electricien
+MembreEquipage <|-- Mecanicien
+MembreEquipage <|-- OfficierDeGarde
+MembreEquipage <|-- RondeurSecurite
+MembreEquipage <|-- VeilleurCoupee
+IObservateur <|.. MembreEquipage
+MembreEquipage ..> Incident : réagit à
+
+' ===== Navire =====
+class Navire {
+    +Nom : string
+    +Type : string
+    +Compartiments : List<string>
+    +{static} FaireRonde(rondeurSecurite : RondeurSecurite, compartiment : string, observation : string) : void
+}
+Navire ..> RondeurSecurite : utilise
+
+' ===== Journal de bord =====
+class JournalDeBord {
+    -_entrees : List<EntreeJournal>
+    +AjouterEntree(date : DateTime, name : string, poste : string, evenement : string) : void
+    +ConsulterEntrees() : void
+}
+class EntreeJournal {
+    +Date : DateTime
+    +Name : string
+    +Poste : string
+    +Evenement : string
+}
+JournalDeBord o-- "0..*" EntreeJournal : contient
+
+@enduml

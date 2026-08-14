@@ -12,7 +12,7 @@ public class OfficierDeGarde : MembreEquipage
     {
         if (incident.Gravite == "mineur")
         {
-            Console.WriteLine($"{Nom} ({Grade}) :Officier de garde au PC Sécurité. Alerte reçue : {incident.Decrire()}. A traiter lors de la prochaine ronde.");
+            Console.WriteLine($"{Nom} ({Grade}) :Officier de garde au PC Sécurité. Alerte reçue : {incident.Decrire()}. A traiter pour la prochaine ronde.");
         }
         else if (incident.Gravite is "majeur" or "critique")
         {
