@@ -23,8 +23,6 @@ class Program
         centreAlerte.Abonner(rondeur);
         centreAlerte.Abonner(veilleur);
 
-        centreAlerte.Notifier(new AvarieMecanique("critique", "test", "moteur bâbord"));
-
         JournalDeBord journal = new JournalDeBord();
 
         bool continuerLeQuart = true;
@@ -35,34 +33,66 @@ class Program
             Console.WriteLine("3. Assurer la veille à la coupée");
             Console.WriteLine("4. Déclarer un incident");
             Console.WriteLine("0. Terminer le quart");
+
             string choix = Console.ReadLine();
 
             switch (choix)
             {
                 case "1":
-                    Console.WriteLine("(à coder)"); break;
+                    Console.WriteLine("(à coder)");
+                    break;
                 case "2":
-                    FaireRonde(navire, rondeur, journal, centreAlerte); break;
+                    FaireRonde(navire, rondeur, journal, centreAlerte);
+                    break;
                 case "3":
-                    AssurerVeille(navire, veilleur, journal, centreAlerte); break;
+                    AssurerVeille(navire, veilleur, journal, centreAlerte);
+                    break;
                 case "4":
-                    DeclarerIncident(journal, centreAlerte); break;
+                    DeclarerIncident(journal, centreAlerte);
+                    break;
                 case "0":
                     continuerLeQuart = false;
-                    Console.WriteLine("Fin du quart."); break;
+                    Console.WriteLine("Fin du quart.");
+                    break;
+                default:
+                    Console.WriteLine("Option invalide, veuillez réessayer");
+                    break;
             }
         }
     }
 
-    static void FaireRonde(Navire navire, RondeurSecurite rondeur, JournalDeBord journal, CentreAlerte centreAlerte)
+    static void FaireRonde(
+        Navire navire,
+        RondeurSecurite rondeur,
+        JournalDeBord journal,
+        CentreAlerte centreAlerte)
+    {
+        foreach (string compartiment in navire.Compartiments)
+        {
+            Console.WriteLine($"Observatoin à {compartiment} (RAS ou description de l'anomalie) :");
+            string observation = Console.ReadLine();
+
+            Navire.FaireRonde(rondeur, compartiment, observation);
+            journal.AjouterEntree(DateTime.Now, rondeur.Nom, rondeur.PosteAffecte, $"Ronde en {compartiment} - {observation}");
+
+            Console.WriteLine($"Anomalie à signaler suite à la ronde de {compartiment} ? (o/n)");
+            string reponseAnomalie = Console.ReadLine();
+            bool autreAnomalie = reponseAnomalie != null && reponseAnomalie.Trim().ToLower() == "0";
+        }
+    }
+
+
+    static void AssurerVeille(
+        Navire navire,
+        VeilleurCoupee veilleur,
+        JournalDeBord journal,
+        CentreAlerte centreAlerte)
     {
         Console.WriteLine("(à coder)");
     }
-    static void AssurerVeille(Navire navire, VeilleurCoupee veilleur, JournalDeBord journal, CentreAlerte centreAlerte)
-    {
-        Console.WriteLine("(à coder)");
-    }
-    static void DeclarerIncident(JournalDeBord journal, CentreAlerte centreAlerte)
+    static void DeclarerIncident(
+        JournalDeBord journal,
+        CentreAlerte centreAlerte)
     {
         Console.WriteLine("(à coder)");
     }
