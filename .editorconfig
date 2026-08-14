@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0210: Convertir en instructions de niveau supérieur
+dotnet_diagnostic.IDE0210.severity = none
