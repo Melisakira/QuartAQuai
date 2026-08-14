@@ -23,7 +23,7 @@ class Program
         centreAlerte.Abonner(rondeur);
         centreAlerte.Abonner(veilleur);
 
-        centreAlerte.Notifier(new AlerteMeteo("mineur", "test", ""));
+        centreAlerte.Notifier(new AvarieMecanique("critique", "test", "moteur bâbord"));
 
         JournalDeBord journal = new JournalDeBord();
 
