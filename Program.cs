@@ -1,6 +1,7 @@
 using QuartAQuai.Alertes;
 using QuartAQuai.AQuai;
 using QuartAQuai.Equipage;
+using Spectre.Console;
 
 namespace QuartAQuai;
 
@@ -24,6 +25,9 @@ class Program
 
         JournalDeBord journal = new JournalDeBord();
 
+        AnsiConsole.Write(new FigletText("QuartAQuai").Color(Color.LightPink3));
+        AnsiConsole.MarkupLine("[bold cadetblue_1] Simulation du quart de nuit (à quai) - F911 Wesdiep, à Zeebrugge[/]\n");
+
         bool continuerLeQuart = true;
         while (continuerLeQuart)
         {
@@ -36,7 +40,7 @@ class Program
             switch (choix)
             {
                 case "1":
-                    Console.WriteLine("(à coder)");
+                    journal.ConsulterEntrees();
                     break;
                 case "2":
                     FaireRonde(navire, rondeur, journal, centreAlerte);
@@ -81,7 +85,7 @@ class Program
             {
                 Console.WriteLine("Type d'anomalie constatée ?");
                 Console.WriteLine("1. Panne électrique");
-                Console.WriteLine("2. Avarie éléctrique");
+                Console.WriteLine("2. Avarie électrique");
                 string choixType = Console.ReadLine();
                 string typeAnomalie = choixType == "1" ? "Panne électrique" : "Avarie mécanique";
 
@@ -257,7 +261,10 @@ class Program
 
         Console.WriteLine($"--- Incident déclaré : {incident.Decrire()}---");
         centreAlerte.Notifier(incident);
-        journal.AjouterEntree(DateTime.Now, "Centre d'alerte", "Alertes", $"Incident déclaré : {incident.Decrire()}");
+        journal.AjouterEntree(DateTime.Now,
+                              "Centre d'alerte",
+                              "Alertes",
+                              $"Incident déclaré : {incident.Decrire()}");
     }
 }
 
