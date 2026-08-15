@@ -44,7 +44,7 @@ class Program
                     FaireRonde(navire, rondeur, journal, centreAlerte);
                     break;
                 case "3":
-                    AssurerVeille(navire, veilleur, journal, centreAlerte);
+                    AssurerVeille(veilleur, journal, centreAlerte);
                     break;
                 case "4":
                     DeclarerIncident(journal, centreAlerte);
@@ -129,21 +129,34 @@ class Program
         }
     }
 
-
     static void AssurerVeille(
-        Navire navire,
         VeilleurCoupee veilleur,
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        Console.WriteLine("(à coder)");
+        Console.WriteLine("(État des ammares :)");
+        string etatAmarres = Console.ReadLine();
+
+        Console.WriteLine("Observation à la coupée (RAS ou Description) :");
+        string observation = Console.ReadLine();
+
+        veilleur.SurveillerQuai(etatAmarres, observation);
+        journal.AjouterEntree(DateTime.Now, veilleur.Nom, veilleur.PosteAffecte, $"Veille à la coupée - amarres {etatAmarres} - {observation}");
+
+        Console.WriteLine("Cette obervation nécessite-t-elle de déclarer un incident ? (o/n)");
+        string reponseAnomalie = Console.ReadLine();
+        bool autreIncident = reponseAnomalie != null && reponseAnomalie.Trim().ToLower() == "o";
+
+        while (autreIncident)
+        {
+            Console.WriteLine(
+        }
+        static void DeclarerIncident(
+            JournalDeBord journal,
+            CentreAlerte centreAlerte)
+        {
+            Console.WriteLine("(à coder)");
+        }
     }
-    static void DeclarerIncident(
-        JournalDeBord journal,
-        CentreAlerte centreAlerte)
-    {
-        Console.WriteLine("(à coder)");
-    }
-}
 
 
