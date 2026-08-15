@@ -59,7 +59,6 @@ class Program
             }
         }
     }
-
     static void FaireRonde(
         Navire navire,
         RondeurSecurite rondeur,
@@ -80,11 +79,11 @@ class Program
 
             while (autreAnomalie)
             {
-                Console.WriteLine("Type de panne constatée ?");
+                Console.WriteLine("Type d'anomalie constatée ?");
                 Console.WriteLine("1. Panne électrique");
                 Console.WriteLine("2. Avarie éléctrique");
                 string choixType = Console.ReadLine();
-                string typePanne = choixType == "1" ? "Panne élecrtrique" : "Avarie mécanique";
+                string typeAnomalie = choixType == "1" ? "Panne élecrtrique" : "Avarie mécanique";
 
                 Console.WriteLine("Gravité de l'anomalie");
                 Console.WriteLine("1. mineur");
@@ -105,7 +104,7 @@ class Program
                 string descriptionIncident = Console.ReadLine();
 
                 Incident incident;
-                if (typePanne == "Panne électrique")
+                if (typeAnomalie == "Panne électrique")
                 {
                     Console.WriteLine("Équipement concerné :");
                     string equipement = Console.ReadLine();
@@ -128,7 +127,6 @@ class Program
             }
         }
     }
-
     static void AssurerVeille(
         VeilleurCoupee veilleur,
         JournalDeBord journal,
@@ -143,20 +141,67 @@ class Program
         veilleur.SurveillerQuai(etatAmarres, observation);
         journal.AjouterEntree(DateTime.Now, veilleur.Nom, veilleur.PosteAffecte, $"Veille à la coupée - amarres {etatAmarres} - {observation}");
 
-        Console.WriteLine("Cette obervation nécessite-t-elle de déclarer un incident ? (o/n)");
-        string reponseAnomalie = Console.ReadLine();
-        bool autreIncident = reponseAnomalie != null && reponseAnomalie.Trim().ToLower() == "o";
+        Console.WriteLine("Cette obervation nécessite-t-elle de déclarer une menace ? (o/n)");
+        string reponseMenace = Console.ReadLine();
+        bool autreMenace = reponseMenace != null && reponseMenace.Trim().ToLower() == "o";
 
-        while (autreIncident)
+        while (autreMenace)
         {
-            Console.WriteLine(
-        }
-        static void DeclarerIncident(
-            JournalDeBord journal,
-            CentreAlerte centreAlerte)
-        {
-            Console.WriteLine("(à coder)");
+            Console.WriteLine("Type de menace");
+            Console.WriteLine("1. Incident de sûreté");
+            Console.WriteLine("2. Alerte météo");
+            string choixType = Console.ReadLine();
+            string typeMenace = choixType == "1" ? "Incident de sûreté" : "Alerte météo";
+            Console.WriteLine("Gravité de la menace");
+            Console.WriteLine("1. mineur");
+            Console.WriteLine("2. majeur");
+            Console.WriteLine("3. critique");
+            string choixGravite = Console.ReadLine();
+            string gravite = choixGravite
+
+            switch
+            {
+                "1" => "mineur",
+                "2" => "majeur",
+                "3" => "critique",
+                _ => "mineur"
+            };
+
+            Console.WriteLine("Description de cette menace :");
+            string descriptionIncident = Console.ReadLine();
+
+            Incident incident;
+            if (typeMenace == "Incident de sûreté")
+            {
+                Console.WriteLine("Nature de la menace :");
+                string menace = Console.ReadLine();
+                incident = new IncidentSurete(gravite, descriptionIncident, menace);
+            }
+            else
+            {
+                Console.WriteLine("Phénomène obervé:");
+                string phenomene = Console.ReadLine();
+                incident = new AlerteMeteo(gravite, descriptionIncident, phenomene);
+            }
+
+            Console.WriteLine($" --- Incident déclaré : {incident.Decrire()} ---");
+            centreAlerte.Notifier(incident);
+            journal.AjouterEntree(DateTime.Now, veilleur.Nom, veilleur.PosteAffecte, $"Incident déclaré depuis la coupée : {incident.Decrire()}");
+
+            Console.WriteLine($"Une autre menace pour cette veille ? (o/n)");
+            string reponseAutre = Console.ReadLine();
+            autreMenace = reponseAutre != null && reponseAutre.Trim().ToLower() == "o";
         }
     }
+
+    static void DeclarerIncident(
+        JournalDeBord journal,
+        CentreAlerte centreAlerte)
+    {
+        Console.WriteLine("(à coder)");
+    }
+
+}
+
 
 
