@@ -8,8 +8,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Navire navire = new Navire("F911 Wesdiep", "Fr&gate");
-
+        Navire navire = new Navire("F911 Wesdiep", "Frégate");
         Electricien electricien = new Electricien("Brandenbourg", "1er Maître", "Local technique");
         Mecanicien mecanicien = new Mecanicien("Lefevre", "Quartier-Maître", "Salle des machines");
         OfficierDeGarde officier = new OfficierDeGarde("Dupont", "Enseigne de vaisseau", "Poste de garde");
@@ -77,7 +76,56 @@ class Program
 
             Console.WriteLine($"Anomalie à signaler suite à la ronde de {compartiment} ? (o/n)");
             string reponseAnomalie = Console.ReadLine();
-            bool autreAnomalie = reponseAnomalie != null && reponseAnomalie.Trim().ToLower() == "0";
+            bool autreAnomalie = reponseAnomalie != null && reponseAnomalie.Trim().ToLower() == "o";
+
+            while (autreAnomalie)
+            {
+                Console.WriteLine("Type de panne constatée ?");
+                Console.WriteLine("1. Panne électrique");
+                Console.WriteLine("2. Avarie éléctrique");
+                string choixType = Console.ReadLine();
+                string typePanne = choixType == "1" ? "Panne élecrtrique" : "Avarie mécanique";
+
+                Console.WriteLine("Gravité de l'anomalie");
+                Console.WriteLine("1. mineur");
+                Console.WriteLine("2. majeur");
+                Console.WriteLine("3. critique");
+                string choixGravite = Console.ReadLine();
+                string gravite = choixGravite
+
+                switch
+                {
+                    "1" => "mineur",
+                    "2" => "majeur",
+                    "3" => "critique",
+                    _ => "mineur"
+                };
+
+                Console.WriteLine("Description de cette anomalie :");
+                string descriptionIncident = Console.ReadLine();
+
+                Incident incident;
+                if (typePanne == "Panne électrique")
+                {
+                    Console.WriteLine("Équipement concerné :");
+                    string equipement = Console.ReadLine();
+                    incident = new PanneElectrique(gravite, descriptionIncident, equipement);
+                }
+                else
+                {
+                    Console.WriteLine("Équipement concerné :");
+                    string equipement = Console.ReadLine();
+                    incident = new AvarieMecanique(gravite, descriptionIncident, equipement);
+                }
+
+                Console.WriteLine($" --- Incident déclaré : {incident.Decrire()} ---");
+                centreAlerte.Notifier(incident);
+                journal.AjouterEntree(DateTime.Now, rondeur.Nom, rondeur.PosteAffecte, $"Incident signalé lors de la ronde : {incident.Decrire()}");
+
+                Console.WriteLine($"Une autre anomalie à signaler dans {compartiment} ? (o/n)");
+                string reponseAutre = Console.ReadLine();
+                autreAnomalie = reponseAutre != null && reponseAutre.Trim().ToLower() == "o";
+            }
         }
     }
 
