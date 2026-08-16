@@ -31,8 +31,7 @@ class Program
         bool continuerLeQuart = true;
         while (continuerLeQuart)
         {
-            string choix = AnsiConsole.Prompt(new SelectionPrompt<string>().Title(" Que souhaitez-vous faire ?")
-                                                                           .AddChoices("1. Consulter le journal de bord", "2. Faire la ronde de sécurité", "3. Assurer la veille à la coupée", "4. Déclarer un incident"));
+            string choix = AnsiConsole.Prompt(new SelectionPrompt<string>().Title(" Que souhaitez-vous faire ?").AddChoices("1. Consulter le journal de bord", "2. Faire la ronde de sécurité", "3. Assurer la veille à la coupée", "4. Déclarer un incident"));
 
             switch (choix)
             {
@@ -63,6 +62,8 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
+        AnsiConsole.Write(new Rule("[bold blue]Ronde de sécurité[/]").LeftJustified());
+
         foreach (string compartiment in navire.Compartiments)
         {
             string observation = AnsiConsole.Ask<string>($"Observation à {compartiment} (RAS ou description de l'anomalie) :");
@@ -76,14 +77,9 @@ class Program
             bool autreAnomalie = AnsiConsole.Confirm($"Anomalie à signaler suite à la ronde de {compartiment} ?", false);
             while (autreAnomalie)
             {
-                string typeAnomalie = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type d'anomalie constatée ?")
-                                                                                      .AddChoices("Panne électrique",
-                                                                                                  "Avarie mécanique"));
+                string typeAnomalie = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type d'anomalie constatée ?").AddChoices("Panne électrique", "Avarie mécanique"));
 
-                string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'anomalie ?")
-                                                                                 .AddChoices("mineur",
-                                                                                             "majeur",
-                                                                                             "critique"));
+                string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'anomalie ?").AddChoices("mineur", "majeur", "critique"));
 
                 string descriptionAnomalie = AnsiConsole.Ask<string>("Description de cette anomalie :");
 
@@ -103,6 +99,7 @@ class Program
                 AnsiConsole.WriteLine();
 
                 AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
+
                 centreAlerte.Notifier(incident);
                 journal.AjouterEntree(DateTime.Now,
                                       rondeur.Nom,
@@ -129,6 +126,8 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
+        AnsiConsole.Write(new Rule("[bold blue]Veille à la coupée[/]").LeftJustified());
+
         string etatAmarres = AnsiConsole.Ask<string>("État des amarres :");
         string observation = AnsiConsole.Ask<string>("Observation à la coupée (RAS ou Description) :");
 
@@ -177,6 +176,8 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
+        AnsiConsole.Write(new Rule("[bold blue]Déclaration d'incident[/]").LeftJustified());
+
         string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Quel type d'incident déclarer ?").AddChoices("Panne électrique", "Avarie mécanique", "Alerte météo", "Incident de sûreté"));
 
         string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'incident ?").AddChoices("mineur", "majeur", "critique"));
@@ -197,6 +198,9 @@ class Program
         AnsiConsole.WriteLine();
 
         AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
+
+        AnsiConsole.Write(new Rule("[Green]Réaction de l'équipage[/]").LeftJustified());
+
         centreAlerte.Notifier(incident);
         journal.AjouterEntree(DateTime.Now,
                               "Centre d'alerte",
