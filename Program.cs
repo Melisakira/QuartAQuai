@@ -46,7 +46,7 @@ class Program
                 case "1. Consulter le journal de bord":
                     journal.ConsulterEntrees();
                     break;
-                case "2. Faire laRonde la ronde de sécurité":
+                case "2. Faire la ronde de sécurité":
                     FaireRonde(navire, rondeur, journal, centreAlerte);
                     break;
                 case "3. Assurer la veille à la coupée":
@@ -55,9 +55,9 @@ class Program
                 case "4. Déclarer un incident":
                     DeclarerIncident(journal, centreAlerte);
                     break;
-                case "O. Terminer le quart":
+                case "0. Terminer le quart":
                     continuerLeQuart = false;
-                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/n]");
+                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/]");
                     break;
             }
 
