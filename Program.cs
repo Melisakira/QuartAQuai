@@ -171,7 +171,6 @@ class Program
                                   veilleur.PosteAffecte,
                                   $"Incident déclaré depuis la coupée : {incident.Decrire()}");
 
-            string reponseAutre = Console.ReadLine();
             autreMenace = AnsiConsole.Confirm("Une autre menace pour cette veille ?", false);
         }
     }
@@ -179,51 +178,32 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        Console.WriteLine("Quel type d'incident déclarer");
-        Console.WriteLine("1. Panne électrique");
-        Console.WriteLine("2. Avarie mécanique");
-        Console.WriteLine("3. Alerte météo");
-        Console.WriteLine("4. Incident de sûreté");
-        string choixType = Console.ReadLine();
+        string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Quel type d'incident déclarer ?").AddChoices("Panne éléctrique", "Avarie mécanique", "Alerte météo", "Incident de sûreté"));
 
-        Console.WriteLine("Gravité de l'incident ?");
-        Console.WriteLine("1. mineur");
-        Console.WriteLine("2. majeur");
-        Console.WriteLine("3. critique");
-        string choixGravite = Console.ReadLine();
-        string gravite = choixGravite
-        switch
-        {
-            "1" => "mineur",
-            "2" => "majeur",
-            "3" => "critique",
-            _ => "mineur"
-        };
+        string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'incident ?").AddChoices("mineur", "majeur", "critique"));
 
-        Console.WriteLine("Description de l'incident :");
-        string description = Console.ReadLine();
+        string description = AnsiConsole.Ask<string>("Description de l'incident :");
 
         Incident incident;
-        switch (choixType)
+
+        switch (type)
         {
-            case "1":
-                Console.WriteLine("Système concerné :");
-                string systeme = Console.ReadLine();
+
+            case "Panne électrique":
+                string systeme = AnsiConsole.Ask<string>("Système concerné :");
                 incident = new PanneElectrique(gravite, description, systeme);
                 break;
-            case "2":
-                Console.WriteLine("Équipement concerné :");
-                string equipement = Console.ReadLine();
+            case "Avarie mécanique":
+                string equipement = AnsiConsole.Ask<string>("Système concerné");
                 incident = new AvarieMecanique(gravite, description, equipement);
                 break;
-            case "3":
+            case "Alerte météo":
                 Console.WriteLine("Phénomène observé :");
-                string phenomene = Console.ReadLine();
+                string phenomene = AnsiConsole.Ask<string>("Phénomène observé :");
                 incident = new AlerteMeteo(gravite, description, phenomene);
                 break;
-            case "4":
-                Console.WriteLine("Nature de l'incident de sûreté :");
-                string menace = Console.ReadLine();
+            case "Incident de sûreté":
+                string menace = AnsiConsole.Ask<string>("Nature de l'incident de sûreté :");
                 incident = new IncidentSurete(gravite, description, menace);
                 break;
             default:
@@ -231,7 +211,8 @@ class Program
                 return;
         }
 
-        Console.WriteLine($"--- Incident déclaré : {incident.Decrire()}---");
+        string couleur = CouleurGravite(gravite);
+        AnsiConsole.MarkupLine($"\n[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
         centreAlerte.Notifier(incident);
         journal.AjouterEntree(DateTime.Now,
                               "Centre d'alerte",
