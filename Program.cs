@@ -133,11 +133,8 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        Console.WriteLine("(État des ammares :)");
-        string etatAmarres = Console.ReadLine();
-
-        Console.WriteLine("Observation à la coupée (RAS ou Description) :");
-        string observation = Console.ReadLine();
+        string etatAmarres = AnsiConsole.Ask<string>("État des amarres :");
+        string observation = AnsiConsole.Ask<string>("Observation à la coupée (RAS ou Description) :");
 
         veilleur.SurveillerQuai(etatAmarres, observation);
         journal.AjouterEntree(DateTime.Now,
@@ -145,48 +142,29 @@ class Program
                               veilleur.PosteAffecte,
                               $"Veille à la coupée - amarres {etatAmarres} - {observation}");
 
-        Console.WriteLine("Cette obervation nécessite-t-elle de déclarer une menace ? (o/n)");
-        string reponseMenace = Console.ReadLine();
-        bool autreMenace = reponseMenace != null && reponseMenace.Trim().ToLower() == "o";
+        bool autreMenace = AnsiConsole.Confirm("Cette observation nécessite-t-elle de déclarer une menace ?", false);
         while (autreMenace)
         {
-            Console.WriteLine("Type de menace");
-            Console.WriteLine("1. Incident de sûreté");
-            Console.WriteLine("2. Alerte météo");
-            string choixType = Console.ReadLine();
-            string typeMenace = choixType == "1" ? "Incident de sûreté" : "Alerte météo";
-            Console.WriteLine("Gravité de la menace");
-            Console.WriteLine("1. mineur");
-            Console.WriteLine("2. majeur");
-            Console.WriteLine("3. critique");
-            string choixGravite = Console.ReadLine();
-            string gravite = choixGravite
-            switch
-            {
-                "1" => "mineur",
-                "2" => "majeur",
-                "3" => "critique",
-                _ => "mineur"
-            };
+            string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type de menace ?").AddChoices("Incident de sûreté", "Alerte météo"));
 
-            Console.WriteLine("Description de cette menace :");
-            string descriptionIncident = Console.ReadLine();
+            string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de la menace ?").AddChoices("mineur", "majeur", "critique"));
+
+            string descriptionIncident = AnsiConsole.Ask<string>("Description de la menace :");
 
             Incident incident;
-            if (typeMenace == "Incident de sûreté")
+            if (type == "Incident de sûreté")
             {
-                Console.WriteLine("Nature de la menace :");
-                string menace = Console.ReadLine();
+                string menace = AnsiConsole.Ask<string>("Nature de la menace :");
                 incident = new IncidentSurete(gravite, descriptionIncident, menace);
             }
             else
             {
-                Console.WriteLine("Phénomène obervé:");
-                string phenomene = Console.ReadLine();
+                string phenomene = AnsiConsole.Ask<string>("Phénomène observé :");
                 incident = new AlerteMeteo(gravite, descriptionIncident, phenomene);
             }
 
-            Console.WriteLine($" --- Incident déclaré : {incident.Decrire()} ---");
+            string couleur = CouleurGravite(gravite);
+            AnsiConsole.MarkupLine($"\n[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
             centreAlerte.Notifier(incident);
             journal.AjouterEntree(DateTime.Now,
                                   veilleur.Nom,
@@ -195,7 +173,7 @@ class Program
 
             Console.WriteLine($"Une autre menace pour cette veille ? (o/n)");
             string reponseAutre = Console.ReadLine();
-            autreMenace = reponseAutre != null && reponseAutre.Trim().ToLower() == "o";
+            autreMenace = AnsiConsole.Confirm("Une autre menace pour cette veille ?", false);
         }
     }
     static void DeclarerIncident(
