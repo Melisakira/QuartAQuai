@@ -25,40 +25,42 @@ class Program
 
         JournalDeBord journal = new JournalDeBord();
 
-        AnsiConsole.Write(new FigletText("QuartAQuai").Color(Color.LightPink3));
+        AnsiConsole.Write(new FigletText("QuartAQuai").Color(Color.RoyalBlue1));
         AnsiConsole.MarkupLine("[bold cadetblue_1] Simulation du quart de nuit (à quai) - F911 Wesdiep, à Zeebrugge[/]\n");
 
         bool continuerLeQuart = true;
         while (continuerLeQuart)
         {
-            Console.WriteLine("1. Consulter le journal de bord");
-            Console.WriteLine("2. Faire la ronde de sécurité");
-            Console.WriteLine("3. Assurer la veille à la coupée");
-            Console.WriteLine("4. Déclarer un incident");
-            Console.WriteLine("0. Terminer le quart");
-            string choix = Console.ReadLine();
+            string choix = AnsiConsole.Prompt(new SelectionPrompt<string>().Title(" Que souhaitez-vous faire ?").AddChoices(new[]
+            {
+                "1. Consulter le journal de bord",
+                "2. Faire la ronde de sécurité",
+                "3. Assurer la veille à la coupée",
+                "4. Déclarer un incident",
+                "0. Terminer le quart"
+            }));
+
             switch (choix)
             {
-                case "1":
+                case "1. Consulter le journal de bord":
                     journal.ConsulterEntrees();
                     break;
-                case "2":
+                case "2. Faire laRonde la ronde de sécurité":
                     FaireRonde(navire, rondeur, journal, centreAlerte);
                     break;
-                case "3":
+                case "3. AssurerVeille la veille à la coupée":
                     AssurerVeille(veilleur, journal, centreAlerte);
                     break;
-                case "4":
+                case "4. Déclarer un incident":
                     DeclarerIncident(journal, centreAlerte);
                     break;
-                case "0":
+                case "O. Terminer le quart":
                     continuerLeQuart = false;
-                    Console.WriteLine("Fin du quart.");
-                    break;
-                default:
-                    Console.WriteLine("Option invalide, veuillez réessayer");
+                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/n]");
                     break;
             }
+
+            AnsiConsole.Write(new Rule().RuleStyle("green"));
         }
     }
     static void FaireRonde(
