@@ -31,7 +31,8 @@ class Program
         bool continuerLeQuart = true;
         while (continuerLeQuart)
         {
-            string choix = AnsiConsole.Prompt(new SelectionPrompt<string>().Title(" Que souhaitez-vous faire ?").AddChoices(new[]
+            string choix = AnsiConsole.Prompt(new SelectionPrompt<string>().Title(" Que souhaitez-vous faire ?")
+                                                                           .AddChoices(new[]
             {
                 "1. Consulter le journal de bord",
                 "2. Faire la ronde de sécurité",
@@ -48,7 +49,7 @@ class Program
                 case "2. Faire laRonde la ronde de sécurité":
                     FaireRonde(navire, rondeur, journal, centreAlerte);
                     break;
-                case "3. AssurerVeille la veille à la coupée":
+                case "3. Assurer la veille à la coupée":
                     AssurerVeille(veilleur, journal, centreAlerte);
                     break;
                 case "4. Déclarer un incident":
@@ -60,7 +61,7 @@ class Program
                     break;
             }
 
-            AnsiConsole.Write(new Rule().RuleStyle("green"));
+            AnsiConsole.Write(new Rule().RuleStyle("grey"));
         }
     }
     static void FaireRonde(
@@ -71,8 +72,7 @@ class Program
     {
         foreach (string compartiment in navire.Compartiments)
         {
-            Console.WriteLine($"Observation à {compartiment} (RAS ou description de l'anomalie) :");
-            string observation = Console.ReadLine();
+            string observation = AnsiConsole.Ask<string>($"Observation à {compartiment} (RAS ou description de l'anomalie) :");
 
             Navire.FaireRonde(rondeur, compartiment, observation);
             journal.AjouterEntree(DateTime.Now,
@@ -80,60 +80,53 @@ class Program
                                   rondeur.PosteAffecte,
                                   $"Ronde en {compartiment} - {observation}");
 
-            Console.WriteLine($"Anomalie à signaler suite à la ronde de {compartiment} ? (o/n)");
-            string reponseAnomalie = Console.ReadLine();
-            bool autreAnomalie = reponseAnomalie != null && reponseAnomalie.Trim().ToLower() == "o";
+            bool autreAnomalie = AnsiConsole.Confirm($"Anomalie à signaler suite à la ronde de {compartiment} ?", false);
             while (autreAnomalie)
             {
-                Console.WriteLine("Type d'anomalie constatée ?");
-                Console.WriteLine("1. Panne électrique");
-                Console.WriteLine("2. Avarie électrique");
-                string choixType = Console.ReadLine();
-                string typeAnomalie = choixType == "1" ? "Panne électrique" : "Avarie mécanique";
+                string typeAnomalie = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type d'anomalie constatée ?")
+                                                                                      .AddChoices("Panne électrique",
+                                                                                                  "Avarie mécanique"));
 
-                Console.WriteLine("Gravité de l'anomalie");
-                Console.WriteLine("1. mineur");
-                Console.WriteLine("2. majeur");
-                Console.WriteLine("3. critique");
-                string choixGravite = Console.ReadLine();
-                string gravite = choixGravite
-                switch
-                {
-                    "1" => "mineur",
-                    "2" => "majeur",
-                    "3" => "critique",
-                    _ => "mineur"
-                };
+                string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'anomalie ?")
+                                                                                 .AddChoices("mineur",
+                                                                                             "majeur",
+                                                                                             "critique"));
 
-                Console.WriteLine("Description de cette anomalie :");
-                string descriptionIncident = Console.ReadLine();
+                string descriptionAnomalie = AnsiConsole.Ask<string>("Description de cette anomalie :");
 
                 Incident incident;
                 if (typeAnomalie == "Panne électrique")
                 {
-                    Console.WriteLine("Équipement concerné :");
-                    string equipement = Console.ReadLine();
-                    incident = new PanneElectrique(gravite, descriptionIncident, equipement);
+                    string equipement = AnsiConsole.Ask<string>("Équipement concerné :");
+                    incident = new PanneElectrique(gravite, descriptionAnomalie, equipement);
                 }
                 else
                 {
-                    Console.WriteLine("Équipement concerné :");
-                    string equipement = Console.ReadLine();
-                    incident = new AvarieMecanique(gravite, descriptionIncident, equipement);
+                    string equipement = AnsiConsole.Ask<string>("Équipement concerné :");
+                    incident = new AvarieMecanique(gravite, descriptionAnomalie, equipement);
                 }
-
-                Console.WriteLine($" --- Incident déclaré : {incident.Decrire()} ---");
+                string couleur = CouleurGravite(gravite);
+                AnsiConsole.MarkupLine($"\n[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
                 centreAlerte.Notifier(incident);
                 journal.AjouterEntree(DateTime.Now,
                                       rondeur.Nom,
                                       rondeur.PosteAffecte,
                                       $"Incident signalé lors de la ronde : {incident.Decrire()}");
 
-                Console.WriteLine($"Une autre anomalie à signaler dans {compartiment} ? (o/n)");
-                string reponseAutre = Console.ReadLine();
-                autreAnomalie = reponseAutre != null && reponseAutre.Trim().ToLower() == "o";
+                autreAnomalie = AnsiConsole.Confirm($"Une autre anomalie à signaler dans {compartiment} ?", false);
             }
         }
+    }
+    private static string CouleurGravite(string gravite)
+    {
+        return gravite switch
+        {
+            "mineur" => "yellow",
+            "majeur" => "orange1",
+            "critique" => "bold red",
+            _ => "white",
+        };
+
     }
     static void AssurerVeille(
         VeilleurCoupee veilleur,
