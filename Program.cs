@@ -171,7 +171,6 @@ class Program
                                   veilleur.PosteAffecte,
                                   $"Incident déclaré depuis la coupée : {incident.Decrire()}");
 
-            Console.WriteLine($"Une autre menace pour cette veille ? (o/n)");
             string reponseAutre = Console.ReadLine();
             autreMenace = AnsiConsole.Confirm("Une autre menace pour cette veille ?", false);
         }
