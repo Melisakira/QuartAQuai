@@ -31,53 +31,18 @@ class Program
         bool continuerLeQuart = true;
         while (continuerLeQuart)
         {
-            string choix = AnsiConsole.Prompt(new SelectionPrompt<string>().Title(" Que souhaitez-vous faire ?").AddChoices("1. Consulter le journal de bord", "2. Faire la ronde de sécurité", "3. Assurer la veille à la coupée", "4. Déclarer un incident", "0. Terminer le quart"));
+            string choix = Choisir(" Que souhaitez-vous faire ?",
+                                   "1. Consulter le journal de bord",
+                                   "2. Faire la ronde de sécurité",
+                                   "3. Assurer la veille à la coupée",
+                                   "4. Déclarer un incident",
+                                   "0. Terminer le quart");
 
             switch (choix)
             {
                 case "1. Consulter le journal de bord":
-                    {
-                        AnsiConsole.Write(new Rule("[bold blue]Journal de bord[/]").LeftJustified());
-
-                        bool prendreLeQuart = AnsiConsole.Confirm("Consigner une prise de quart avant de consulter le journal", false);
-                        if (prendreLeQuart)
-                        {
-                            string nomOfficier = AnsiConsole.Ask<string>("Nom de l'Officier prenant le quart :");
-                            string poste = AnsiConsole.Ask<string>("Poste occupé :");
-                            string heureDebut = AnsiConsole.Ask<string>("Heure de début du quart :");
-                            string heureFin = AnsiConsole.Ask<string>("Heude de fin de quart :");
-
-                            journal.AjouterEntree(DateTime.Now,
-                               nomOfficier,
-                               poste,
-                               $"Prise de quart de {heureDebut} à {heureFin}");
-                        }
-                        List<EntreeJournal> entrees = journal.ObtenirEntrees();
-                        if (entrees.Count == 0)
-                        {
-                            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]");
-                        }
-                        else
-                        {
-                            Table table = new Table();
-                            table.AddColumn("Date");
-                            table.AddColumn("Nom");
-                            table.AddColumns("Poste");
-                            table.AddColumns("Événement");
-
-                            foreach (EntreeJournal entree in entrees)
-                            {
-                                table.AddRow(
-                                    entree.Date.ToString("dd/MM/yyyy HH:mm:ss"),
-                                    Markup.Escape(entree.Name),
-                                    Markup.Escape(entree.Poste),
-                                    Markup.Escape(entree.Evenement));
-                            }
-
-                            AnsiConsole.Write(table);
-                        }
-                        break;
-                    }
+                    ConsulterJournal(journal);
+                    break;
                 case "2. Faire la ronde de sécurité":
                     FaireRonde(navire, rondeur, journal, centreAlerte);
                     break;
@@ -96,113 +61,103 @@ class Program
             AnsiConsole.Write(new Rule().RuleStyle("grey"));
         }
     }
+    static void ConsulterJournal(JournalDeBord journal)
+    {
+        AfficherSection("Journal de bord");
+
+        bool prendreLeQuart = AnsiConsole.Confirm("Consigner une prise de quart avant de consulter le journal", false);
+        if (prendreLeQuart)
+        {
+            string nomOfficier = AnsiConsole.Ask<string>("Nom de l'Officier prenant le quart :");
+            string poste = AnsiConsole.Ask<string>("Poste occupé :");
+            string heureDebut = AnsiConsole.Ask<string>("Heure de début du quart :");
+            string heureFin = AnsiConsole.Ask<string>("Heude de fin de quart :");
+
+            journal.AjouterEntree(DateTime.Now,
+                                  nomOfficier,
+                                  poste,
+                                  $"Prise de quart de {heureDebut} à {heureFin}");
+        }
+
+        List<EntreeJournal> entrees = journal.ObtenirEntrees();
+        if (entrees.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]");
+            return;
+        }
+
+        Table table = new Table();
+        table.AddColumn("Date");
+        table.AddColumn("Nom");
+        table.AddColumns("Poste");
+        table.AddColumns("Événement");
+
+        foreach (EntreeJournal entree in entrees)
+        {
+            table.AddRow(
+                entree.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                Markup.Escape(entree.Name),
+                Markup.Escape(entree.Poste),
+                Markup.Escape(entree.Evenement));
+        }
+
+        AnsiConsole.Write(table);
+    }
     static void FaireRonde(
         Navire navire,
         RondeurSecurite rondeur,
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        AnsiConsole.Write(new Rule("[bold blue]Ronde de sécurité[/]").LeftJustified());
+        AfficherSection("Ronde de sécurité");
 
         foreach (string compartiment in navire.Compartiments)
         {
             string observation = AnsiConsole.Ask<string>($"Observation à {compartiment} (RAS ou description de l'anomalie) :");
 
             Navire.FaireRonde(rondeur, compartiment, observation);
-            journal.AjouterEntree(DateTime.Now,
-                                  rondeur.Nom,
-                                  rondeur.PosteAffecte,
-                                  $"Ronde en {compartiment} - {observation}");
+            journal.AjouterEntree(DateTime.Now, rondeur, $"Ronde en {compartiment} - {observation}");
 
             bool autreAnomalie = AnsiConsole.Confirm($"Anomalie à signaler suite à la ronde de {compartiment} ?", false);
             while (autreAnomalie)
             {
-                string typeAnomalie = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type d'anomalie constatée ?").AddChoices("Panne électrique", "Avarie mécanique"));
+                Incident incident = DemanderIncident("Type d'anomalie constatée ?",
+                                                     "Gravité de l'anomalie ?",
+                                                     "Description de cette anomalie :",
+                                                     IncidentFactory.TypePanneElectrique,
+                                                     IncidentFactory.TypeAvarieMecanique);
 
-                string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'anomalie ?").AddChoices("mineur", "majeur", "critique"));
-
-                string descriptionAnomalie = AnsiConsole.Ask<string>("Description de cette anomalie :");
-
-                Incident incident;
-                if (typeAnomalie == "Panne électrique")
-                {
-                    string equipement = AnsiConsole.Ask<string>("Équipement concerné :");
-                    incident = new PanneElectrique(gravite, descriptionAnomalie, equipement);
-                }
-                else
-                {
-                    string equipement = AnsiConsole.Ask<string>("Équipement concerné :");
-                    incident = new AvarieMecanique(gravite, descriptionAnomalie, equipement);
-                }
-                string couleur = CouleurGravite(gravite);
-                AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-                AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
-                centreAlerte.Notifier(incident);
-                journal.AjouterEntree(DateTime.Now,
-                                      rondeur.Nom,
-                                      rondeur.PosteAffecte,
-                                      $"Incident signalé lors de la ronde : {incident.Decrire()}");
+                Declarer(incident, centreAlerte);
+                journal.AjouterEntree(DateTime.Now, rondeur, $"Incident signalé lors de la ronde : {incident.Decrire()}");
 
                 autreAnomalie = AnsiConsole.Confirm($"Une autre anomalie à signaler dans {compartiment} ?", false);
             }
         }
-    }
-    private static string CouleurGravite(string gravite)
-    {
-        return gravite switch
-        {
-            "mineur" => "yellow",
-            "majeur" => "orange1",
-            "critique" => "bold red",
-            _ => "white",
-        };
-
     }
     static void AssurerVeille(
         VeilleurCoupee veilleur,
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        AnsiConsole.Write(new Rule("[bold blue]Veille à la coupée[/]").LeftJustified());
+        AfficherSection("Veille à la coupée");
 
         string etatAmarres = AnsiConsole.Ask<string>("État des amarres :");
         string observation = AnsiConsole.Ask<string>("Observation à la coupée (RAS ou Description) :");
 
         veilleur.SurveillerQuai(etatAmarres, observation);
-        journal.AjouterEntree(DateTime.Now,
-                              veilleur.Nom,
-                              veilleur.PosteAffecte,
-                              $"Veille à la coupée - amarres {etatAmarres} - {observation}");
+        journal.AjouterEntree(DateTime.Now, veilleur, $"Veille à la coupée - amarres {etatAmarres} - {observation}");
 
         bool autreMenace = AnsiConsole.Confirm("Cette observation nécessite-t-elle de déclarer une menace ?", false);
         while (autreMenace)
         {
-            string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type de menace ?").AddChoices("Incident de sûreté", "Alerte météo"));
+            Incident incident = DemanderIncident("Type de menace ?",
+                                                 "Gravité de la menace ?",
+                                                 "Description de la menace :",
+                                                 IncidentFactory.TypeIncidentSurete,
+                                                 IncidentFactory.TypeAlerteMeteo);
 
-            string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de la menace ?").AddChoices("mineur", "majeur", "critique"));
-
-            string descriptionIncident = AnsiConsole.Ask<string>("Description de la menace :");
-
-            Incident incident;
-            if (type == "Incident de sûreté")
-            {
-                string menace = AnsiConsole.Ask<string>("Nature de la menace :");
-                incident = new IncidentSurete(gravite, descriptionIncident, menace);
-            }
-            else
-            {
-                string phenomene = AnsiConsole.Ask<string>("Phénomène observé :");
-                incident = new AlerteMeteo(gravite, descriptionIncident, phenomene);
-            }
-
-            string couleur = CouleurGravite(gravite);
-            AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-            AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
-            centreAlerte.Notifier(incident);
-            journal.AjouterEntree(DateTime.Now,
-                                  veilleur.Nom,
-                                  veilleur.PosteAffecte,
-                                  $"Incident déclaré depuis la coupée : {incident.Decrire()}");
+            Declarer(incident, centreAlerte);
+            journal.AjouterEntree(DateTime.Now, veilleur, $"Incident déclaré depuis la coupée : {incident.Decrire()}");
 
             autreMenace = AnsiConsole.Confirm("Une autre menace pour cette veille ?", false);
         }
@@ -211,36 +166,56 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        AnsiConsole.Write(new Rule("[bold blue]Déclaration d'incident[/]").LeftJustified());
-        string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Quel type d'incident déclarer ?").AddChoices("Panne électrique", "Avarie mécanique", "Alerte météo", "Incident de sûreté"));
+        AfficherSection("Déclaration d'incident");
 
-        string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'incident ?").AddChoices("mineur", "majeur", "critique"));
+        Incident incident = DemanderIncident("Quel type d'incident déclarer ?",
+                                             "Gravité de l'incident ?",
+                                             "Description de l'incident :",
+                                             IncidentFactory.Types);
 
-        string description = AnsiConsole.Ask<string>("Description de l'incident :");
-
-        Incident incident = type switch
-        {
-            "Panne électrique" => new PanneElectrique(gravite, description, AnsiConsole.Ask<string>("Équipement concerné :")),
-            "Avarie mécanique" => new AvarieMecanique(gravite, description, AnsiConsole.Ask<string>("Équipement concerné :")),
-            "Alerte météo" => new AlerteMeteo(gravite, description, AnsiConsole.Ask<string>("Phénomène observé :")),
-            "Incident de sûreté" => new IncidentSurete(gravite, description, AnsiConsole.Ask<string>("Nature de la menace :")),
-            _ => throw new InvalidOperationException($"Type d'incident invalide : {type}")
-        };
-
-        string couleur = CouleurGravite(gravite);
-        AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-        AnsiConsole.Write(new Rule("[DarkKhaki]Réaction de l'équipage[/]").LeftJustified());
-
-        centreAlerte.Notifier(incident);
+        Declarer(incident, centreAlerte);
         journal.AjouterEntree(DateTime.Now,
                               "Centre d'alerte",
                               "Alertes",
-                              $"Incident déclaré : " +
-                              $"{incident.Decrire()}");
+                              $"Incident déclaré : {incident.Decrire()}");
+    }
+    private static Incident DemanderIncident(
+        string titreType,
+        string titreGravite,
+        string titreDescription,
+        params string[] types)
+    {
+        string type = Choisir(titreType, types);
+        string gravite = Choisir(titreGravite, IncidentFactory.Gravites);
+        string description = AnsiConsole.Ask<string>(titreDescription);
+        string detail = AnsiConsole.Ask<string>(IncidentFactory.LibelleDetail(type));
+
+        return IncidentFactory.Creer(type, gravite, description, detail);
+    }
+    private static void Declarer(Incident incident, CentreAlerte centreAlerte)
+    {
+        string couleur = CouleurGravite(incident.Gravite);
+        AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
+        AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
+
+        centreAlerte.Notifier(incident);
+    }
+    private static void AfficherSection(string titre)
+    {
+        AnsiConsole.Write(new Rule($"[bold blue]{titre}[/]").LeftJustified());
+    }
+    private static string Choisir(string titre, params string[] choix)
+    {
+        return AnsiConsole.Prompt(new SelectionPrompt<string>().Title(titre).AddChoices(choix));
+    }
+    private static string CouleurGravite(string gravite)
+    {
+        return gravite switch
+        {
+            IncidentFactory.GraviteMineur => "yellow",
+            IncidentFactory.GraviteMajeur => "orange1",
+            IncidentFactory.GraviteCritique => "bold red",
+            _ => "white",
+        };
     }
 }
-
-
-
-
-

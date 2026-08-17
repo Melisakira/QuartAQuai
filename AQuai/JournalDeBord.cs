@@ -1,3 +1,5 @@
+using QuartAQuai.Equipage;
+
 namespace QuartAQuai.AQuai;
 
 public class JournalDeBord
@@ -15,6 +17,10 @@ public class JournalDeBord
     {
         EntreeJournal nouvelleEntree = new EntreeJournal(date, name, poste, evenement);
         _entrees.Add(nouvelleEntree);
+    }
+    public void AjouterEntree(DateTime date, MembreEquipage membre, string evenement)
+    {
+        AjouterEntree(date, membre.Nom, membre.PosteAffecte, evenement);
     }
 }
 

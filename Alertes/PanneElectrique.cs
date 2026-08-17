@@ -12,7 +12,7 @@ public class PanneElectrique : Incident
 
     public override string Decrire()
     {
-        return $"{Description} -{SystemeConcerne} [{Gravite}]";
+        return Formater(SystemeConcerne);
     }
 }
 

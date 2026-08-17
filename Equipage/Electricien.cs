@@ -1,29 +1,16 @@
-﻿using System;
 using QuartAQuai.Alertes;
 
 namespace QuartAQuai.Equipage;
 
-public class Electricien : MembreEquipage
+public class Electricien : Technicien
 {
     public Electricien(string nom, string grade, string posteAffecte)
-        : base(nom, grade, posteAffecte)
+        : base(nom, grade, posteAffecte, "l'électricien")
     {
     }
 
-    public override void ReagirAlerte(Incident incident)
+    protected override bool EstDeMonDomaine(Incident incident)
     {
-        if (incident is PanneElectrique)
-        {
-            Console.WriteLine($"{Nom} ({Grade}) : Je me rends en {PosteAffecte} pour traiter :{incident.Decrire()}");
-            Console.WriteLine($"{Nom} ({Grade}) : J'isole le circuit défaillant et je procède à la réparation ");
-            Console.WriteLine($"{Nom} ({Grade}) : Officier de quart, ici l'électricien. Panne résolue concernant:{incident.Decrire()}");
-
-        }
-        else
-        {
-            Console.WriteLine($"{Nom} ({Grade}) : Incident hors de mon domaine, je reste à mon poste : {incident.Decrire()}");
-        }
+        return incident is PanneElectrique;
     }
 }
-
-

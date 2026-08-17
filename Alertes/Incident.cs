@@ -11,6 +11,11 @@ public abstract class Incident
         Description = description;
     }
     public abstract string Decrire();
+
+    protected string Formater(string detail)
+    {
+        return $"{Description} - {detail} [{Gravite}]";
+    }
 }
 
 

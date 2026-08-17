@@ -35,16 +35,20 @@ Chaque fonctionnalité est indépendante, **mais non étanche**, dans sa finalit
 
 ### `MembreEquipage` (hiérarchie principale, polymorphisme)
 
-Classe abstraite `MembreEquipage` (nom, grade, poste affecté), qui implémente l'interface `IObservateur` et porte la méthode concrète `MettreAJour`. Elle contient une méthode abstraite `ReagirAlerte()`. Cinq rôles la spécialisent réellement, chacun avec sa propre réaction (selon son posteAffecté) :
+Classe abstraite `MembreEquipage` (nom, grade, poste affecté), qui implémente l'interface `IObservateur` et porte la méthode concrète `MettreAJour`. Elle contient une méthode abstraite `ReagirAlerte()`, ainsi que les utilitaires partagés d'affichage (`Identite`, `Annoncer`, `AnnoncerHorsDomaine`) qui donnent à toutes les prises de parole la même forme `Nom (Grade) : message`. Cinq rôles la spécialisent réellement, chacun avec sa propre réaction (selon son posteAffecté) :
 `OfficierDeGarde`, `Electricien`, `Mecanicien`, `RondeurSecurite`, `VeilleurCoupee`.
+
+Les deux techniciens (`Electricien`, `Mecanicien`) partagent la même procédure d'intervention, factorisée dans la classe abstraite intermédiaire `Technicien` : chaque technicien ne déclare que le type d'incident de son domaine (`EstDeMonDomaine`) et l'origine de son compte rendu.
 
 Réaction du rôle à un incident : chaque rôle réagit différemment selon le type d'incident (panne électrique, avarie mécanique, alerte météo, incident de sûreté). La réaction est implémentée dans la méthode `ReagirAlerte()` de chaque sous-classe.
 - **Cas particuliers** : l'`OfficierDeGarde` coordonne les interventions, le `RondeurSecurite` peut déclencher un incident mais ne traite pas l'incident lui-même, le `VeilleurCoupee` peut déclencher une alerte météo/incident de sûreté.
 
 ### `Incident` (hiérarchie secondaire)
 
-Classe abstraite `Incident` (gravité, description) avec une méthode abstraite `Decrire()`.
+Classe abstraite `Incident` (gravité, description) avec une méthode abstraite `Decrire()` et un utilitaire de mise en forme partagé `Formater(detail)`.
 Quatre types concrets : `PanneElectrique`, `AvarieMecanique`, `AlerteMeteo`, `IncidentSurete`.
+
+La création d'un incident à partir du type choisi par l'utilisateur est centralisée dans `IncidentFactory` (types et gravités disponibles, libellé de la question de détail, instanciation) : les trois fonctionnalités qui peuvent déclarer un incident (ronde, veille, déclaration directe) passent toutes par elle.
 
 ## Design pattern : Observer
 
@@ -61,8 +65,8 @@ Quatre types concrets : `PanneElectrique`, `AvarieMecanique`, `AlerteMeteo`, `In
 
 | Namespace | Contenu |
 |---|---|
-| `QuartAQuai.Equipage` | `MembreEquipage` (abstraite) et ses 5 dérivées (`OfficierDeGarde`, `Electricien`, `Mecanicien`, `RondeurSecurite`, `VeilleurCoupee`) — implémente `IObservateur` |
-| `QuartAQuai.Alertes` | `Incident` (abstraite) et ses 4 dérivées (`PanneElectrique`, `AvarieMecanique`, `AlerteMeteo`, `IncidentSurete`), `IObservateur`, `ISujet`, `CentreAlerte` |
+| `QuartAQuai.Equipage` | `MembreEquipage` (abstraite), `Technicien` (abstraite) et ses 5 rôles (`OfficierDeGarde`, `Electricien`, `Mecanicien`, `RondeurSecurite`, `VeilleurCoupee`) — implémente `IObservateur` |
+| `QuartAQuai.Alertes` | `Incident` (abstraite) et ses 4 dérivées (`PanneElectrique`, `AvarieMecanique`, `AlerteMeteo`, `IncidentSurete`), `IncidentFactory`, `IObservateur`, `ISujet`, `CentreAlerte` |
 | `QuartAQuai.AQuai` | `Navire`, `JournalDeBord`, `EntreeJournal` |
 | `QuartAQuai` (racine) | `Program` — point d'entrée, seule classe à dépendre de Spectre.Console |
 

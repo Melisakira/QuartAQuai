@@ -5,6 +5,7 @@ abstract class Incident {
     +Gravite : string
     +Description : string
     +{abstract} Decrire() : string
+    #Formater(detail : string) : string
 }
 class AlerteMeteo {
     +Phenomene : string
@@ -27,6 +28,14 @@ Incident <|-- AlerteMeteo
 Incident <|-- AvarieMecanique
 Incident <|-- IncidentSurete
 Incident <|-- PanneElectrique
+
+class IncidentFactory <<static>> {
+    +{static} Types : string[]
+    +{static} Gravites : string[]
+    +{static} LibelleDetail(type : string) : string
+    +{static} Creer(type : string, gravite : string, description : string, detail : string) : Incident
+}
+IncidentFactory ..> Incident : crée
 
 ' ===== Pattern Observer =====
 interface IObservateur {
@@ -53,14 +62,22 @@ abstract class MembreEquipage {
     +Nom : string
     +Grade : string
     +PosteAffecte : string
+    +Identite : string
     +{abstract} ReagirAlerte(incident : Incident) : void
     +MettreAJour(incident : Incident) : void
+    #Annoncer(message : string) : void
+    #AnnoncerHorsDomaine(incident : Incident) : void
+}
+abstract class Technicien {
+    -_origineCompteRendu : string
+    +ReagirAlerte(incident : Incident) : void
+    #{abstract} EstDeMonDomaine(incident : Incident) : bool
 }
 class Electricien {
-    +ReagirAlerte(incident : Incident) : void
+    #EstDeMonDomaine(incident : Incident) : bool
 }
 class Mecanicien {
-    +ReagirAlerte(incident : Incident) : void
+    #EstDeMonDomaine(incident : Incident) : bool
 }
 class OfficierDeGarde {
     +ReagirAlerte(incident : Incident) : void
@@ -73,8 +90,9 @@ class VeilleurCoupee {
     +ReagirAlerte(incident : Incident) : void
 }
 
-MembreEquipage <|-- Electricien
-MembreEquipage <|-- Mecanicien
+MembreEquipage <|-- Technicien
+Technicien <|-- Electricien
+Technicien <|-- Mecanicien
 MembreEquipage <|-- OfficierDeGarde
 MembreEquipage <|-- RondeurSecurite
 MembreEquipage <|-- VeilleurCoupee
@@ -94,6 +112,7 @@ Navire ..> RondeurSecurite : utilise
 class JournalDeBord {
     -_entrees : List<EntreeJournal>
     +AjouterEntree(date : DateTime, name : string, poste : string, evenement : string) : void
+    +AjouterEntree(date : DateTime, membre : MembreEquipage, evenement : string) : void
     +ObtenirEntrees() : List<EntreeJournal>
 }
 class EntreeJournal {

@@ -12,6 +12,6 @@ public class IncidentSurete : Incident
 
     public override string Decrire()
     {
-        return $"{Description} -{NatureMenace} [{Gravite}]";
+        return Formater(NatureMenace);
     }
 }

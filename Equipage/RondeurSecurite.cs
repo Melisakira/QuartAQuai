@@ -10,7 +10,7 @@ public class RondeurSecurite : MembreEquipage
     }
     public override void ReagirAlerte(Incident incident)
     {
-        Console.WriteLine($"{Nom} ({Grade}) - Je poursuis ma ronde, attentif à toute anomalie - {incident.Description}");
+        Annoncer($"Je poursuis ma ronde, attentif à toute anomalie - {incident.Description}");
     }
 }
 

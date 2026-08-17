@@ -22,7 +22,7 @@ public class Navire
     }
     public static void FaireRonde(RondeurSecurite rondeurSecurite, string compartiment, string observation)
     {
-        Console.WriteLine($"{rondeurSecurite.Nom} ({rondeurSecurite.Grade}) - Je fais ma ronde dans {compartiment}, attentif à toute anomalie - {observation}");
+        Console.WriteLine($"{rondeurSecurite.Identite} - Je fais ma ronde dans {compartiment}, attentif à toute anomalie - {observation}");
     }
 }
 
