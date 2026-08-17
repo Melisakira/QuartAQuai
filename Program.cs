@@ -37,7 +37,7 @@ class Program
             {
                 case "1. Consulter le journal de bord":
                     {
-                        AnsiConsole.Write(new Rule("[bold blue]Journal de bord[/]").LeftJustified());
+                        AnsiConsole.Write(new Rule("[bold blue]Journal de bord[/]\n").LeftJustified());
 
                         bool prendreLeQuart = AnsiConsole.Confirm("Consigner une prise de quart avant de consulter le journal", false);
                         if (prendreLeQuart)
@@ -55,7 +55,7 @@ class Program
                         List<EntreeJournal> entrees = journal.ObtenirEntrees();
                         if (entrees.Count == 0)
                         {
-                            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]");
+                            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]\n");
                         }
                         else
                         {
@@ -89,7 +89,7 @@ class Program
                     break;
                 case "0. Terminer le quart":
                     continuerLeQuart = false;
-                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/]");
+                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/]\n");
                     break;
             }
 
@@ -102,7 +102,7 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        AnsiConsole.Write(new Rule("[bold blue]Ronde de sécurité[/]").LeftJustified());
+        AnsiConsole.Write(new Rule("[bold blue]Ronde de sécurité[/]\n").LeftJustified());
 
         foreach (string compartiment in navire.Compartiments)
         {
@@ -135,8 +135,8 @@ class Program
                     incident = new AvarieMecanique(gravite, descriptionAnomalie, equipement);
                 }
                 string couleur = CouleurGravite(gravite);
-                AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-                AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
+                AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]\n");
+                AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]\n").LeftJustified());
                 centreAlerte.Notifier(incident);
                 journal.AjouterEntree(DateTime.Now,
                                       rondeur.Nom,
@@ -163,7 +163,7 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        AnsiConsole.Write(new Rule("[bold blue]Veille à la coupée[/]").LeftJustified());
+        AnsiConsole.Write(new Rule("[bold blue]Veille à la coupée[/]\n").LeftJustified());
 
         string etatAmarres = AnsiConsole.Ask<string>("État des amarres :");
         string observation = AnsiConsole.Ask<string>("Observation à la coupée (RAS ou Description) :");
@@ -177,14 +177,14 @@ class Program
         bool autreMenace = AnsiConsole.Confirm("Cette observation nécessite-t-elle de déclarer une menace ?", false);
         while (autreMenace)
         {
-            string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type de menace ?").AddChoices("Incident de sûreté", "Alerte météo"));
+            string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Type de menace ?").AddChoices("Incident sûreté", "Alerte météo"));
 
             string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de la menace ?").AddChoices("mineur", "majeur", "critique"));
 
             string descriptionIncident = AnsiConsole.Ask<string>("Description de la menace :");
 
             Incident incident;
-            if (type == "Incident de sûreté")
+            if (type == "Incident sûreté")
             {
                 string menace = AnsiConsole.Ask<string>("Nature de la menace :");
                 incident = new IncidentSurete(gravite, descriptionIncident, menace);
@@ -196,8 +196,8 @@ class Program
             }
 
             string couleur = CouleurGravite(gravite);
-            AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-            AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
+            AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]\n");
+            AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]\n").LeftJustified());
             centreAlerte.Notifier(incident);
             journal.AjouterEntree(DateTime.Now,
                                   veilleur.Nom,
@@ -211,8 +211,8 @@ class Program
         JournalDeBord journal,
         CentreAlerte centreAlerte)
     {
-        AnsiConsole.Write(new Rule("[bold blue]Déclaration d'incident[/]").LeftJustified());
-        string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Quel type d'incident déclarer ?").AddChoices("Panne électrique", "Avarie mécanique", "Alerte météo", "Incident de sûreté"));
+        AnsiConsole.Write(new Rule("[bold blue]Déclaration d'incident[/]\n").LeftJustified());
+        string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Quel type d'incident déclarer ?").AddChoices("Panne électrique", "Avarie mécanique", "Alerte météo", "Incident sûreté"));
 
         string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'incident ?").AddChoices("mineur", "majeur", "critique"));
 
@@ -223,13 +223,13 @@ class Program
             "Panne électrique" => new PanneElectrique(gravite, description, AnsiConsole.Ask<string>("Équipement concerné :")),
             "Avarie mécanique" => new AvarieMecanique(gravite, description, AnsiConsole.Ask<string>("Équipement concerné :")),
             "Alerte météo" => new AlerteMeteo(gravite, description, AnsiConsole.Ask<string>("Phénomène observé :")),
-            "Incident de sûreté" => new IncidentSurete(gravite, description, AnsiConsole.Ask<string>("Nature de la menace :")),
+            "Incident sûreté" => new IncidentSurete(gravite, description, AnsiConsole.Ask<string>("Nature de la menace :")),
             _ => throw new InvalidOperationException($"Type d'incident invalide : {type}")
         };
 
         string couleur = CouleurGravite(gravite);
-        AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-        AnsiConsole.Write(new Rule("[DarkKhaki]Réaction de l'équipage[/]").LeftJustified());
+        AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]\n");
+        AnsiConsole.Write(new Rule("[DarkKhaki]Réaction de l'équipage[/]\n").LeftJustified());
 
         centreAlerte.Notifier(incident);
         journal.AjouterEntree(DateTime.Now,
