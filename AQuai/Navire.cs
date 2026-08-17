@@ -9,6 +9,9 @@ public class Navire
     public List<string> Compartiments { get; }
     public Navire(string nom, string type)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(nom);
+        ArgumentException.ThrowIfNullOrWhiteSpace(type);
+
         Nom = nom;
         Type = type;
         Compartiments =
@@ -22,6 +25,10 @@ public class Navire
     }
     public static void FaireRonde(RondeurSecurite rondeurSecurite, string compartiment, string observation)
     {
+        ArgumentNullException.ThrowIfNull(rondeurSecurite);
+        ArgumentException.ThrowIfNullOrWhiteSpace(compartiment);
+        ArgumentException.ThrowIfNullOrWhiteSpace(observation);
+
         Console.WriteLine($"{rondeurSecurite.Nom} ({rondeurSecurite.Grade}) - Je fais ma ronde dans {compartiment}, attentif à toute anomalie - {observation}");
     }
 }

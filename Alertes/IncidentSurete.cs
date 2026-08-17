@@ -7,6 +7,8 @@ public class IncidentSurete : Incident
     public IncidentSurete(string gravite, string description, string natureMenace)
         : base(gravite, description)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(natureMenace);
+
         NatureMenace = natureMenace;
     }
 

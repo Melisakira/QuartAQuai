@@ -9,6 +9,10 @@ public class EntreeJournal
 
     public EntreeJournal(DateTime date, string name, string poste, string evenement)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(poste);
+        ArgumentException.ThrowIfNullOrWhiteSpace(evenement);
+
         Date = date; Name = name; Poste = poste; Evenement = evenement;
     }
 }

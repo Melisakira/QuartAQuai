@@ -11,6 +11,9 @@ public class VeilleurCoupee : MembreEquipage
 
     public void SurveillerQuai(string etatAmarres, string observation)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(etatAmarres);
+        ArgumentException.ThrowIfNullOrWhiteSpace(observation);
+
         Console.WriteLine($"{Nom} ({Grade}) - Surveillance du quai et des accès : amarres {etatAmarres}, {observation}, prêt à réagir en cas d'incident.");
     }
     public override void ReagirAlerte(Incident incident)

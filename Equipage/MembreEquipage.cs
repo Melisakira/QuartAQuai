@@ -10,6 +10,10 @@ public abstract class MembreEquipage : IObservateur
 
     protected MembreEquipage(string nom, string grade, string posteAffecte)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(nom);
+        ArgumentException.ThrowIfNullOrWhiteSpace(grade);
+        ArgumentException.ThrowIfNullOrWhiteSpace(posteAffecte);
+
         Nom = nom; Grade = grade;
         PosteAffecte = posteAffecte;
     }
@@ -17,6 +21,8 @@ public abstract class MembreEquipage : IObservateur
 
     public void MettreAJour(Incident incident)
     {
+        ArgumentNullException.ThrowIfNull(incident);
+
         ReagirAlerte(incident);
     }
 }

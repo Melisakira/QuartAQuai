@@ -7,6 +7,8 @@ public class PanneElectrique : Incident
     public PanneElectrique(string gravite, string description, string systemeConcerne)
         : base(gravite, description)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(systemeConcerne);
+
         SystemeConcerne = systemeConcerne;
     }
 

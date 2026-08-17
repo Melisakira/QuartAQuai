@@ -7,6 +7,8 @@ public class AlerteMeteo : Incident
     public AlerteMeteo(string gravite, string description, string phenomene)
         : base(gravite, description)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(phenomene);
+
         Phenomene = phenomene;
     }
 

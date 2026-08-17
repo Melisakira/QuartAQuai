@@ -23,6 +23,10 @@ public class OfficierDeGarde : MembreEquipage
                 EscaladerVersCommandant(incident);
             }
         }
+        else
+        {
+            throw new InvalidOperationException($"Gravité inconnue « {incident.Gravite} » : aucune consigne de coordination définie pour l'incident {incident.Decrire()}.");
+        }
     }
     public void EscaladerVersCommandant(Incident incident)
     {

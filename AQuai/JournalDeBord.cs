@@ -4,7 +4,7 @@ public class JournalDeBord
 {
     private readonly List<EntreeJournal> _entrees = new List<EntreeJournal>();
 
-    public List<EntreeJournal> ObtenirEntrees()
+    public IReadOnlyList<EntreeJournal> ObtenirEntrees()
     {
         return _entrees;
     }

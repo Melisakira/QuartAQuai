@@ -7,6 +7,8 @@ public class AvarieMecanique : Incident
     public AvarieMecanique(string gravite, string description, string systemeConcerne)
         : base(gravite, description)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(systemeConcerne);
+
         SystemeConcerne = systemeConcerne;
     }
 
