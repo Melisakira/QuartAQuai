@@ -1,3 +1,4 @@
+using System.Text;
 using QuartAQuai.Alertes;
 using QuartAQuai.AQuai;
 using QuartAQuai.Equipage;
@@ -7,6 +8,8 @@ namespace QuartAQuai;
 
 class Program
 {
+    private const int LongueurMaxSaisie = 200;
+
     static void Main(string[] args)
     {
         Navire navire = new Navire("F911 Wesdiep", "Frégate");
@@ -42,10 +45,10 @@ class Program
                         bool prendreLeQuart = AnsiConsole.Confirm("Consigner une prise de quart avant de consulter le journal", false);
                         if (prendreLeQuart)
                         {
-                            string nomOfficier = AnsiConsole.Ask<string>("Nom de l'Officier prenant le quart :");
-                            string poste = AnsiConsole.Ask<string>("Poste occupé :");
-                            string heureDebut = AnsiConsole.Ask<string>("Heure de début du quart :");
-                            string heureFin = AnsiConsole.Ask<string>("Heude de fin de quart :");
+                            string nomOfficier = DemanderTexte("Nom de l'Officier prenant le quart :");
+                            string poste = DemanderTexte("Poste occupé :");
+                            string heureDebut = DemanderTexte("Heure de début du quart :");
+                            string heureFin = DemanderTexte("Heude de fin de quart :");
 
                             journal.AjouterEntree(DateTime.Now,
                                nomOfficier,
@@ -106,7 +109,7 @@ class Program
 
         foreach (string compartiment in navire.Compartiments)
         {
-            string observation = AnsiConsole.Ask<string>($"Observation à {compartiment} (RAS ou description de l'anomalie) :");
+            string observation = DemanderTexte($"Observation à {compartiment} (RAS ou description de l'anomalie) :");
 
             Navire.FaireRonde(rondeur, compartiment, observation);
             journal.AjouterEntree(DateTime.Now,
@@ -121,17 +124,17 @@ class Program
 
                 string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'anomalie ?").AddChoices("mineur", "majeur", "critique"));
 
-                string descriptionAnomalie = AnsiConsole.Ask<string>("Description de cette anomalie :");
+                string descriptionAnomalie = DemanderTexte("Description de cette anomalie :");
 
                 Incident incident;
                 if (typeAnomalie == "Panne électrique")
                 {
-                    string equipement = AnsiConsole.Ask<string>("Équipement concerné :");
+                    string equipement = DemanderTexte("Équipement concerné :");
                     incident = new PanneElectrique(gravite, descriptionAnomalie, equipement);
                 }
                 else
                 {
-                    string equipement = AnsiConsole.Ask<string>("Équipement concerné :");
+                    string equipement = DemanderTexte("Équipement concerné :");
                     incident = new AvarieMecanique(gravite, descriptionAnomalie, equipement);
                 }
                 string couleur = CouleurGravite(gravite);
@@ -147,6 +150,36 @@ class Program
             }
         }
     }
+    private static string DemanderTexte(string question)
+    {
+        string saisie = AnsiConsole.Prompt(
+            new TextPrompt<string>(Markup.Escape(question))
+                .Validate(valeur =>
+                {
+                    if (string.IsNullOrWhiteSpace(valeur))
+                    {
+                        return ValidationResult.Error("[red]La saisie ne peut pas être vide.[/]");
+                    }
+                    if (valeur.Trim().Length > LongueurMaxSaisie)
+                    {
+                        return ValidationResult.Error($"[red]La saisie ne peut pas dépasser {LongueurMaxSaisie} caractères.[/]");
+                    }
+                    return ValidationResult.Success();
+                }));
+
+        return Nettoyer(saisie);
+    }
+
+    private static string Nettoyer(string saisie)
+    {
+        StringBuilder texte = new StringBuilder(saisie.Length);
+        foreach (char caractere in saisie.Trim())
+        {
+            texte.Append(char.IsControl(caractere) ? ' ' : caractere);
+        }
+        return texte.ToString();
+    }
+
     private static string CouleurGravite(string gravite)
     {
         return gravite switch
@@ -165,8 +198,8 @@ class Program
     {
         AnsiConsole.Write(new Rule("[bold blue]Veille à la coupée[/]\n").LeftJustified());
 
-        string etatAmarres = AnsiConsole.Ask<string>("État des amarres :");
-        string observation = AnsiConsole.Ask<string>("Observation à la coupée (RAS ou Description) :");
+        string etatAmarres = DemanderTexte("État des amarres :");
+        string observation = DemanderTexte("Observation à la coupée (RAS ou Description) :");
 
         veilleur.SurveillerQuai(etatAmarres, observation);
         journal.AjouterEntree(DateTime.Now,
@@ -181,17 +214,17 @@ class Program
 
             string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de la menace ?").AddChoices("mineur", "majeur", "critique"));
 
-            string descriptionIncident = AnsiConsole.Ask<string>("Description de la menace :");
+            string descriptionIncident = DemanderTexte("Description de la menace :");
 
             Incident incident;
             if (type == "Incident sûreté")
             {
-                string menace = AnsiConsole.Ask<string>("Nature de la menace :");
+                string menace = DemanderTexte("Nature de la menace :");
                 incident = new IncidentSurete(gravite, descriptionIncident, menace);
             }
             else
             {
-                string phenomene = AnsiConsole.Ask<string>("Phénomène observé :");
+                string phenomene = DemanderTexte("Phénomène observé :");
                 incident = new AlerteMeteo(gravite, descriptionIncident, phenomene);
             }
 
@@ -216,14 +249,14 @@ class Program
 
         string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'incident ?").AddChoices("mineur", "majeur", "critique"));
 
-        string description = AnsiConsole.Ask<string>("Description de l'incident :");
+        string description = DemanderTexte("Description de l'incident :");
 
         Incident incident = type switch
         {
-            "Panne électrique" => new PanneElectrique(gravite, description, AnsiConsole.Ask<string>("Équipement concerné :")),
-            "Avarie mécanique" => new AvarieMecanique(gravite, description, AnsiConsole.Ask<string>("Équipement concerné :")),
-            "Alerte météo" => new AlerteMeteo(gravite, description, AnsiConsole.Ask<string>("Phénomène observé :")),
-            "Incident sûreté" => new IncidentSurete(gravite, description, AnsiConsole.Ask<string>("Nature de la menace :")),
+            "Panne électrique" => new PanneElectrique(gravite, description, DemanderTexte("Équipement concerné :")),
+            "Avarie mécanique" => new AvarieMecanique(gravite, description, DemanderTexte("Équipement concerné :")),
+            "Alerte météo" => new AlerteMeteo(gravite, description, DemanderTexte("Phénomène observé :")),
+            "Incident sûreté" => new IncidentSurete(gravite, description, DemanderTexte("Nature de la menace :")),
             _ => throw new InvalidOperationException($"Type d'incident invalide : {type}")
         };
 
