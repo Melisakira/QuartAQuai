@@ -38,6 +38,20 @@ class Program
                 case "1. Consulter le journal de bord":
                     {
                         AnsiConsole.Write(new Rule("[bold blue]Journal de bord[/]").LeftJustified());
+
+                        bool prendreLeQuart = AnsiConsole.Confirm("Consigner une prise de quart avant de consulter le journal", false);
+                        if (prendreLeQuart)
+                        {
+                            string nomOfficier = AnsiConsole.Ask<string>("Nom de l'Officier prenant le quart :");
+                            string poste = AnsiConsole.Ask<string>("Poste occupé :");
+                            string heureDebut = AnsiConsole.Ask<string>("Heure de début du quart :");
+                            string heureFin = AnsiConsole.Ask<string>("Heude de fin de quart :");
+
+                            journal.AjouterEntree(DateTime.Now,
+                               nomOfficier,
+                               poste,
+                               $"Prise de quart de {heureDebut} à {heureFin}");
+                        }
                         List<EntreeJournal> entrees = journal.ObtenirEntrees();
                         if (entrees.Count == 0)
                         {
