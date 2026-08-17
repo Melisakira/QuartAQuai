@@ -122,7 +122,7 @@ class Program
                 }
                 string couleur = CouleurGravite(gravite);
                 AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-                AnsiConsole.Write(new Rule("[grey]Réactions de l'équipage[/]").LeftJustified());
+                AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
                 centreAlerte.Notifier(incident);
                 journal.AjouterEntree(DateTime.Now,
                                       rondeur.Nom,
@@ -183,7 +183,7 @@ class Program
 
             string couleur = CouleurGravite(gravite);
             AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-            AnsiConsole.Write(new Rule("[grey]Réactions de l'équipage[/]").LeftJustified());
+            AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
             centreAlerte.Notifier(incident);
             journal.AjouterEntree(DateTime.Now,
                                   veilleur.Nom,
@@ -215,7 +215,7 @@ class Program
 
         string couleur = CouleurGravite(gravite);
         AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-        AnsiConsole.Write(new Rule("[Green]Réaction de l'équipage[/]").LeftJustified());
+        AnsiConsole.Write(new Rule("[DarkKhaki]Réaction de l'équipage[/]").LeftJustified());
 
         centreAlerte.Notifier(incident);
         journal.AjouterEntree(DateTime.Now,
