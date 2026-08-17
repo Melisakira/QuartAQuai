@@ -54,7 +54,7 @@ class Program
                     break;
                 case "0. Terminer le quart":
                     continuerLeQuart = false;
-                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/]");
+                    AnsiConsole.MarkupLine("[bold deepskyblue2] Fin du quart.[/]\n");
                     break;
             }
 
@@ -82,7 +82,7 @@ class Program
         List<EntreeJournal> entrees = journal.ObtenirEntrees();
         if (entrees.Count == 0)
         {
-            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]");
+            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]\n");
             return;
         }
 
@@ -195,14 +195,14 @@ class Program
     private static void Declarer(Incident incident, CentreAlerte centreAlerte)
     {
         string couleur = CouleurGravite(incident.Gravite);
-        AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-        AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]").LeftJustified());
+        AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]\n");
+        AnsiConsole.Write(new Rule("[DarkKhaki]Réactions de l'équipage[/]\n").LeftJustified());
 
         centreAlerte.Notifier(incident);
     }
     private static void AfficherSection(string titre)
     {
-        AnsiConsole.Write(new Rule($"[bold blue]{titre}[/]").LeftJustified());
+        AnsiConsole.Write(new Rule($"[bold blue]{titre}[/]\n").LeftJustified());
     }
     private static string Choisir(string titre, params string[] choix)
     {

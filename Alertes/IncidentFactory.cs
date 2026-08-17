@@ -5,7 +5,7 @@ public static class IncidentFactory
     public const string TypePanneElectrique = "Panne électrique";
     public const string TypeAvarieMecanique = "Avarie mécanique";
     public const string TypeAlerteMeteo = "Alerte météo";
-    public const string TypeIncidentSurete = "Incident de sûreté";
+    public const string TypeIncidentSurete = "Incident sûreté";
 
     public const string GraviteMineur = "mineur";
     public const string GraviteMajeur = "majeur";
