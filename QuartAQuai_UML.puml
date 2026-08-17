@@ -94,7 +94,7 @@ Navire ..> RondeurSecurite : utilise
 class JournalDeBord {
     -_entrees : List<EntreeJournal>
     +AjouterEntree(date : DateTime, name : string, poste : string, evenement : string) : void
-    +ConsulterEntrees() : void
+    +ObtenirEntrees() : List<EntreeJournal>
 }
 class EntreeJournal {
     +Date : DateTime
