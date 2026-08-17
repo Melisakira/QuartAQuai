@@ -1,8 +1,17 @@
-﻿using System;
+namespace QuartAQuai.Alertes;
 
-public class Class1
+public class AlerteMeteo : Incident
 {
-	public Class1()
-	{
-	}
+    public string Phenomene { get; }
+
+    public AlerteMeteo(string gravite, string description, string phenomene)
+        : base(gravite, description)
+    {
+        Phenomene = phenomene;
+    }
+
+    public override string Decrire()
+    {
+        return $"{Description} -{Phenomene} [{Gravite}]";
+    }
 }

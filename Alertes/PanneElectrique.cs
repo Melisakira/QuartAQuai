@@ -1,8 +1,18 @@
-﻿using System;
+﻿namespace QuartAQuai.Alertes;
 
-public class Class1
+public class PanneElectrique : Incident
 {
-	public Class1()
-	{
-	}
+    public string SystemeConcerne { get; }
+
+    public PanneElectrique(string gravite, string description, string systemeConcerne)
+        : base(gravite, description)
+    {
+        SystemeConcerne = systemeConcerne;
+    }
+
+    public override string Decrire()
+    {
+        return $"{Description} -{SystemeConcerne} [{Gravite}]";
+    }
 }
+

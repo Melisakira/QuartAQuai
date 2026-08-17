@@ -1,8 +1,8 @@
-﻿using System;
+﻿namespace QuartAQuai.Alertes;
 
-public class Class1
+public interface ISujet
 {
-	public Class1()
-	{
-	}
+    void Abonner(IObservateur observateur);
+    void Desabonner(IObservateur observateur);
+    void Notifier (Incident incident);
 }
