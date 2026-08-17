@@ -121,11 +121,8 @@ class Program
                     incident = new AvarieMecanique(gravite, descriptionAnomalie, equipement);
                 }
                 string couleur = CouleurGravite(gravite);
-
-                AnsiConsole.WriteLine();
-
                 AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-
+                AnsiConsole.Write(new Rule("[grey]Réactions de l'équipage[/]").LeftJustified());
                 centreAlerte.Notifier(incident);
                 journal.AjouterEntree(DateTime.Now,
                                       rondeur.Nom,
@@ -185,10 +182,8 @@ class Program
             }
 
             string couleur = CouleurGravite(gravite);
-
-            AnsiConsole.WriteLine();
-
             AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
+            AnsiConsole.Write(new Rule("[grey]Réactions de l'équipage[/]").LeftJustified());
             centreAlerte.Notifier(incident);
             journal.AjouterEntree(DateTime.Now,
                                   veilleur.Nom,
@@ -203,7 +198,6 @@ class Program
         CentreAlerte centreAlerte)
     {
         AnsiConsole.Write(new Rule("[bold blue]Déclaration d'incident[/]").LeftJustified());
-
         string type = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Quel type d'incident déclarer ?").AddChoices("Panne électrique", "Avarie mécanique", "Alerte météo", "Incident de sûreté"));
 
         string gravite = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Gravité de l'incident ?").AddChoices("mineur", "majeur", "critique"));
@@ -220,11 +214,7 @@ class Program
         };
 
         string couleur = CouleurGravite(gravite);
-
-        AnsiConsole.WriteLine();
-
         AnsiConsole.MarkupLine($"[{couleur}]--- Incident déclaré : {Markup.Escape(incident.Decrire())} ---[/]");
-
         AnsiConsole.Write(new Rule("[Green]Réaction de l'équipage[/]").LeftJustified());
 
         centreAlerte.Notifier(incident);
