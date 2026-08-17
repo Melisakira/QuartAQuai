@@ -36,8 +36,34 @@ class Program
             switch (choix)
             {
                 case "1. Consulter le journal de bord":
-                    journal.ConsulterEntrees();
-                    break;
+                    {
+                        AnsiConsole.Write(new Rule("[bold blue]Journal de bord[/]").LeftJustified());
+                        List<EntreeJournal> entrees = journal.ObtenirEntrees();
+                        if (entrees.Count == 0)
+                        {
+                            AnsiConsole.MarkupLine("[grey]Le journal de bord est vide pour l'instant[/]");
+                        }
+                        else
+                        {
+                            Table table = new Table();
+                            table.AddColumn("Date");
+                            table.AddColumn("Nom");
+                            table.AddColumns("Poste");
+                            table.AddColumns("Événement");
+
+                            foreach (EntreeJournal entree in entrees)
+                            {
+                                table.AddRow(
+                                    entree.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                                    Markup.Escape(entree.Name),
+                                    Markup.Escape(entree.Poste),
+                                    Markup.Escape(entree.Evenement));
+                            }
+
+                            AnsiConsole.Write(table);
+                        }
+                        break;
+                    }
                 case "2. Faire la ronde de sécurité":
                     FaireRonde(navire, rondeur, journal, centreAlerte);
                     break;
