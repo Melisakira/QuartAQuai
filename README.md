@@ -81,3 +81,8 @@ Toutes les classes métier (`Equipage/`, `Alertes/`, `AQuai/`) utilisent uniquem
 - cd QuartAQuai
 - dotnet run
 
+## Diagramme UML
+
+![Diagramme de classes](UML%20diagram.png)
+
+Le fichier source PlantUML est disponible dans [`QuartAQuai_UML.puml`](QuartAQuai_UML.puml).
